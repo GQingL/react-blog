@@ -13,9 +13,9 @@ dist/
 .DS_Store
 
 # umi
-/src/.umi
-/src/.umi-production
-/src/.umi-test
+src/.umi
+src/.umi-production
+src/.umi-test
 .env.local
 
 secret.js

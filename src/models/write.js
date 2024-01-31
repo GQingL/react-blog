@@ -62,10 +62,13 @@ export default {
           type: 'categoriesHandle',
           payload: {
             categories: data,
-            selectedCategory: data.length > 0 && data[0].id,
-            tags: data.length > 0 && data[0].tags,
+            selectedCategory: data.length > 0 && data[0].category.id,
+            tags: data.length > 0 ? data.tagList : undefined,
             selectedTag:
-              data.length > 0 && data[0].tags.length > 0 && data[0].tags[0].id,
+              data.length > 0 &&
+              data[0].tagList !== undefined &&
+              data[0].tagList.length > 0 &&
+              data[0].tagList[0].id,
           },
         })
       }
@@ -120,11 +123,11 @@ export default {
       }
     },
 
-    setSelecteCategory(state, { payload }) {
+    setSelectCategory(state, { payload }) {
       return { ...state, selectedCategory: payload.selectedCategory }
     },
 
-    setSelecteTag(state, { payload }) {
+    setSelectTag(state, { payload }) {
       return { ...state, selectedTag: payload.selectedTag }
     },
 

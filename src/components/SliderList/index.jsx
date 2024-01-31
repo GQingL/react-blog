@@ -3,7 +3,7 @@ import { List } from 'antd'
 import { Link } from 'umi'
 import { EyeOutlined, LikeOutlined } from '@ant-design/icons'
 
-const SiderList = props => {
+const SliderList = props => {
   const { dataSource, size, split } = props
   return (
     <List
@@ -38,4 +38,4 @@ const SiderList = props => {
   )
 }
 
-export default SiderList
+export default SliderList

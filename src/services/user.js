@@ -23,10 +23,13 @@ export async function getAccount(data) {
 
 // 退出登录
 export async function logoutAccount() {
-  return request('/api/logout', { method: 'POST' })
+  return request('/api/service-user/passport/logout', { method: 'POST' })
 }
 
 // 修改用户信息
 export async function modifyAccount(data) {
-  return request('/api/update/account', { method: 'POST', data })
+  return request('/api/service-user/user/updateUserInfo', {
+    method: 'POST',
+    data,
+  })
 }

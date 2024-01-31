@@ -37,12 +37,12 @@ export async function deleteDraft(data) {
 
 // 获到标签和分类
 export async function getCategories() {
-  return request('/api/categories')
+  return request('/api/service-admin/categoryMng/getCats')
 }
 
 // 发布文章
 export async function createPublish(data) {
-  return request('/api/create/publish', {
+  return request('/api/service-article/article/createArticle', {
     method: 'POST',
     data,
   })

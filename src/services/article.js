@@ -2,9 +2,8 @@ import { stringify } from 'qs'
 import request from '@/utils/request'
 
 // 获取分类
-
 export async function getCategories() {
-  return request('/api/categories')
+  return request('/api/service-admin/categoryMng/getCats')
 }
 
 // 获取文章列表
@@ -14,9 +13,9 @@ export async function getArticles(params) {
   )
 }
 
-// 获取热门文章列表
+// 获取热门文章列表 todo
 export async function getHotArticles() {
-  return request('/api/hot')
+  return request('/api/test')
 }
 
 // 获取文章详情
@@ -26,14 +25,14 @@ export async function getArticleDetail(params) {
   )
 }
 
-// 获取用户评论
+// 获取用户评论 todo
 export async function getComments(params) {
-  return request(`/api/comments?${stringify(params)}`)
+  return request('/api/test')
 }
 
-// 未登录添加评论
+// 未登录添加评论 todo
 export async function createNoLoginComment(data) {
-  return request('/api/toursit/comment', {
+  return request('/api/test', {
     method: 'POST',
     data,
   })
@@ -44,17 +43,17 @@ export async function createComment(data) {
   return request('/api/create/comment', { method: 'POST', data })
 }
 
-// 获取tags
+// 获取tags todo
 export async function getTags() {
-  return request('/api/tags')
+  return request('/api/test')
 }
 
-// 文章点赞
+// 文章点赞 todo
 export async function updateFavorite(data) {
-  return request('/api/update/favorite', { method: 'POST', data })
+  return request('/api/test', { method: 'POST', data })
 }
 
-// 是否已点赞
+// 是否已点赞 todo
 export async function getIsFavorite(params) {
-  return request(`/api/isFavorite?${stringify(params)}`)
+  return request('/api/test')
 }

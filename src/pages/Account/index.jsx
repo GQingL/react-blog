@@ -24,8 +24,6 @@ const Account = props => {
                 <Menu.Item key="/account/me">
                   <Link to="/account/me">我的信息</Link>
                 </Menu.Item>
-                <Menu.Item>主题设置</Menu.Item>
-                <Menu.Item>代码风格</Menu.Item>
               </Menu>
             </div>
             <div className={styles.right}>{children}</div>

@@ -1,7 +1,9 @@
 import { defineConfig } from 'umi'
 
+const REACT_APP_ENV = 'local'
+
 export default defineConfig({
-  title: '这是个人网站首页',
+  title: '个人网站首页',
   favicon:
     'https://immisso-upload.oss-cn-hangzhou.aliyuncs.com/20200517/rc-upload-1589714215963-2.png',
   proxy: {
@@ -100,4 +102,124 @@ export default defineConfig({
       component: '@/pages/404',
     },
   ],
+  chainWebpack(
+    config: {
+      module: {
+        rule: (
+          arg0: string,
+        ) => {
+          (): any
+          new (): any
+          test: {
+            (arg0: RegExp): {
+              (): any
+              new (): any
+              include: {
+                (): any
+                new (): any
+                add: {
+                  (arg0: RegExp): {
+                    (): any
+                    new (): any
+                    end: {
+                      (): {
+                        (): any
+                        new (): any
+                        use: {
+                          (arg0: string | string[]): {
+                            (): any
+                            new (): any
+                            loader: {
+                              (arg0: string): {
+                                (): any
+                                new (): any
+                                options: {
+                                  (arg0: {
+                                    presets: string[]
+                                    plugins: (
+                                      | string
+                                      | {
+                                          libraryName: string
+                                          libraryDirectory: string
+                                          camel2DashComponentName: boolean
+                                        }
+                                    )[][]
+                                  }): void
+                                  new (): any
+                                }
+                                loader: {
+                                  (arg0: string): {
+                                    (): any
+                                    new (): any
+                                    loader: {
+                                      (arg0: string): void
+                                      new (): any
+                                    }
+                                  }
+                                  new (): any
+                                }
+                              }
+                              new (): any
+                            }
+                          }
+                          new (): any
+                        }
+                      }
+                      new (): any
+                    }
+                  }
+                  new (): any
+                }
+              }
+            }
+            new (): any
+          }
+        }
+      }
+    },
+    { webpack }: any,
+  ) {
+    // 自定义 webpack 配置
+    // 添加 MUI 的 babel 插件和样式文件的处理规则
+    config.module
+      .rule('mui')
+      .test(/\.(js|mjs|jsx|ts|tsx)$/)
+      .include.add(/@mui/)
+      .end()
+      .use('babel-loader')
+      .loader('babel-loader')
+      .options({
+        presets: ['@babel/preset-react'],
+        plugins: [
+          [
+            'babel-plugin-import',
+            {
+              libraryName: '@mui/material',
+              libraryDirectory: '',
+              camel2DashComponentName: false,
+            },
+            '@mui/material',
+          ],
+          [
+            'babel-plugin-import',
+            {
+              libraryName: '@mui/icons-material',
+              libraryDirectory: '',
+              camel2DashComponentName: false,
+            },
+            '@mui/icons-material',
+          ],
+        ],
+      })
+    // 添加 MUI 的样式文件处理规则
+    config.module
+      .rule('mui-styles')
+      .test(/\.(css|less)$/)
+      .include.add(/@mui/)
+      .end()
+      .use(['style-loader', 'css-loader', 'less-loader'])
+      .loader('style-loader')
+      .loader('css-loader')
+      .loader('less-loader')
+  },
 })

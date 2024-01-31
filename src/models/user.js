@@ -7,7 +7,7 @@ import {
 } from '@/services/user'
 import storageHelper from '@/utils/storage'
 
-const avatars = [
+const face = [
   'https://immisso.oss-cn-hangzhou.aliyuncs.com/avatar/001.png',
   'https://immisso.oss-cn-hangzhou.aliyuncs.com/avatar/002.png',
   'https://immisso.oss-cn-hangzhou.aliyuncs.com/avatar/003.png',
@@ -61,7 +61,7 @@ export default {
           type: 'handle',
           payload: {
             account: response.data,
-            avatar: response.data.avatar,
+            face: response.data.face,
           },
         })
       }
@@ -95,7 +95,8 @@ export default {
       return { ...state, ...payload }
     },
     changeAvatar(state) {
-      return { ...state, avatar: avatars[Math.floor(Math.random() * 4)] }
+      console.log(state)
+      return { ...state, face: face[Math.floor(Math.random() * 4)] }
     },
   },
 }

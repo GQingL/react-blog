@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { Form, Input, Row, Col, Avatar, Button, Tag } from 'antd'
 import { connect } from 'dva'
+import storageHelper from '@/utils/storage'
 
 const Me = props => {
-  const { dispatch, account, history, avatar } = props
+  const { dispatch, account, history, face } = props
   const [form] = Form.useForm()
   useEffect(() => {
     if (!account || !account.id) {
@@ -11,6 +12,7 @@ const Me = props => {
     }
     dispatch({
       type: 'user/account',
+      payload: { userId: storageHelper.get('user').id },
       callback(res) {
         if (res.status === 200) {
           const account = res.data
@@ -23,32 +25,30 @@ const Me = props => {
       },
     })
   }, [])
-
   const changeAvatar = () => {
     dispatch({ type: 'user/changeAvatar' })
   }
-
   const onFinish = values => {
     if (dispatch) {
       dispatch({
         type: 'user/setAccount',
-        payload: { ...values, avatar },
+        payload: { ...values, face, id: form.getFieldValue('id') },
       })
     }
   }
-
   return (
     <>
       <h2>个人信息</h2>
       <Row>
         <Col span={12}>
           <Form form={form} layout="vertical" onFinish={onFinish}>
+            <Form.Item disabled name="id" label="主键"></Form.Item>
             <Form.Item
-              name="email"
+              name="mobile"
               label="邮箱"
               rules={[
                 {
-                  type: 'email',
+                  type: 'mobile',
                   message: '不是有效的电子邮箱',
                 },
               ]}
@@ -58,18 +58,11 @@ const Me = props => {
             <Form.Item name="nickname" label="昵称">
               <Input placeholder="输入您的昵称" />
             </Form.Item>
-            <Form.Item name="profession" label="职业">
-              <Input placeholder="职业" />
+            <Form.Item name="realname" label="真实姓名">
+              <Input placeholder="真实姓名" />
             </Form.Item>
             <Form.Item name="summary" label="简介">
               <Input.TextArea rows={4} placeholder="简介" />
-            </Form.Item>
-            <Form.Item
-              name="website"
-              label="个人网站"
-              rules={[{ type: 'url' }]}
-            >
-              <Input placeholder="个人网站地址" />
             </Form.Item>
             <Form.Item
               name="github"
@@ -77,12 +70,6 @@ const Me = props => {
               rules={[{ type: 'url' }]}
             >
               <Input placeholder="Github地址" />
-            </Form.Item>
-            <Form.Item name="gitee" label="码云地址" rules={[{ type: 'url' }]}>
-              <Input placeholder="gitee地址" />
-            </Form.Item>
-            <Form.Item name="weibo" label="微博地址" rules={[{ type: 'url' }]}>
-              <Input placeholder="微博地址" />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
@@ -93,7 +80,7 @@ const Me = props => {
         </Col>
         <Col span={12}>
           <div className="tc">
-            <Avatar size={128} src={avatar} />
+            <Avatar size={128} src={face} />
           </div>
           <div className="tc mt-10">
             <Button onClick={changeAvatar}>切换图片</Button>
@@ -109,8 +96,8 @@ const Me = props => {
   )
 }
 
-export default connect(({ user: { avatar, account }, loading }) => ({
-  avatar,
+export default connect(({ user: { face, account }, loading }) => ({
+  face,
   account,
   loading,
 }))(Me)

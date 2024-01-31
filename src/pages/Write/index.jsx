@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { connect } from 'dva'
 import moment from 'moment'
+import FileUpload from '@/components/FileUpload'
+
 import {
   Input,
   Row,
@@ -36,11 +38,11 @@ const { TextArea } = Input
 const Content = props => {
   const {
     categories,
-    tags,
     selectedTag,
     selectedCategory,
     checkTagHandle,
-    checkCategorysHandle,
+    checkCategoriesHandle,
+    tags,
     onPublish,
     returnCoverImageUrl,
   } = props
@@ -50,13 +52,13 @@ const Content = props => {
       <div>
         {/* {categories && <CheckTag checkTagHandle={checkTagHandle} data={categories} />} */}
         {categories &&
-          categories.map(category => (
+          categories.map(categories => (
             <CheckableTag
-              key={category.en_name}
-              checked={category.id === selectedCategory}
-              onChange={selected => checkCategorysHandle(category)}
+              key={categories.category.name}
+              checked={categories.category.id === selectedCategory}
+              onChange={selected => checkCategoriesHandle(categories)}
             >
-              {category.name}
+              {categories.category.name}
             </CheckableTag>
           ))}
       </div>
@@ -65,7 +67,7 @@ const Content = props => {
         {tags &&
           tags.map(tag => (
             <CheckableTag
-              key={tag.en_name}
+              key={tag.name}
               checked={tag.id === selectedTag}
               onChange={() => checkTagHandle(tag)}
             >
@@ -75,7 +77,7 @@ const Content = props => {
       </div>
       <h4 style={{ marginBottom: 16, marginTop: 10 }}>文章封面图</h4>
       <div>
-        {/* <AliOssUpload type="click" returnImageUrl={returnCoverImageUrl} /> */}
+        <FileUpload type="click" returnImageUrl={returnCoverImageUrl} />
       </div>
       <div className="mt-20 tc">
         <Button type="primary" onClick={onPublish}>
@@ -183,7 +185,6 @@ const ImageModal = props => {
       visible={imageModalVisible}
       onOk={insertImageOk}
     >
-      <AliOssUpload type="drag" returnImageUrl={returnImage} />
       <p className="tc mt-10">或</p>
       <Input
         placeholder="输入网络图片地址"
@@ -300,19 +301,19 @@ const Write = props => {
   const checkTagHandle = tag => {
     if (dispatch) {
       dispatch({
-        type: 'write/setSelecteTag',
+        type: 'write/setSelectTag',
         payload: { selectedTag: tag.id },
       })
     }
   }
 
-  const checkCategorysHandle = category => {
+  const checkCategoriesHandle = category => {
     if (dispatch) {
       dispatch({
-        type: 'write/setSelecteCategory',
-        payload: { selectedCategory: category.id },
+        type: 'write/setSelectCategory',
+        payload: { selectedCategory: category.category.id },
       })
-      dispatch({ type: 'write/setTags', payload: { tags: category.tags } })
+      dispatch({ type: 'write/setTags', payload: { tags: category.tagList } })
     }
   }
 
@@ -321,12 +322,15 @@ const Write = props => {
       dispatch({
         type: 'write/publish',
         payload: {
+          publishUserId: 1,
+          articleType: 2,
+          isAppoint: 0,
           markdown,
           title,
-          selectedTag,
-          selectedCategory,
+          tags: [selectedTag],
+          categoryId: selectedCategory,
           coverImageUrl,
-          html: ReactDOMServer.renderToString(
+          content: ReactDOMServer.renderToString(
             <MathJax.Provider input="tex">
               <Markdown markdown={markdown} />
             </MathJax.Provider>,
@@ -500,7 +504,7 @@ const Write = props => {
                 categories={categories}
                 tags={tags}
                 checkTagHandle={checkTagHandle}
-                checkCategorysHandle={checkCategorysHandle}
+                checkCategoriesHandle={checkCategoriesHandle}
                 selectedCategory={selectedCategory}
                 selectedTag={selectedTag}
                 onPublish={onPublish}

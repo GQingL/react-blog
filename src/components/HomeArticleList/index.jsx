@@ -46,7 +46,6 @@ const HomeArticleList = props => {
     <div>
       <Card bordered={false}>
         <List
-          // className="demo-loadmore-list"
           loading={loading}
           itemLayout="vertical"
           dataSource={articles}
@@ -62,23 +61,28 @@ const HomeArticleList = props => {
                 actions={[
                   <IconText
                     icon={EyeOutlined}
-                    text={item.view}
+                    text={item.readCounts}
                     key="list-vertical-star-o"
                   />,
                   <IconText
                     icon={LikeOutlined}
-                    text={item.favorite}
+                    text={item.favoriteCounts}
                     key="list-vertical-like-o"
                   />,
                   <IconText
                     icon={MessageOutlined}
-                    text={item.comment}
+                    text={item.commentCounts}
                     key="list-vertical-message"
                   />,
                 ]}
                 extra={
-                  item.cover ? (
-                    <img width={150} height={92} alt="logo" src={item.cover} />
+                  item.articleType === 1 ? (
+                    <img
+                      width={150}
+                      height={92}
+                      alt="logo"
+                      src={item.articleCover}
+                    />
                   ) : null
                 }
               >
@@ -90,12 +94,16 @@ const HomeArticleList = props => {
                   }
                   description={
                     <span>
-                      <Tag color="orange">{item.tag && item.tag.name}</Tag>
-                      <span>{item.user && item.user.nickname}</span>
+                      <Tag color="orange">
+                        {item.tagList === null ? '通用标签' : item.tagList}
+                      </Tag>
+                      <span>
+                        {item.publisherVO && item.publisherVO.nickname}
+                      </span>
                       <span className="mrl-5">·</span>
                       <span>
-                        <Tooltip title={item.createdAt}>
-                          {moment(item.createdAt).fromNow()}
+                        <Tooltip title={item.publishTime}>
+                          {moment(item.publishTime).fromNow()}
                         </Tooltip>
                       </span>
                     </span>

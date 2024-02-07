@@ -185,6 +185,7 @@ const ImageModal = props => {
       visible={imageModalVisible}
       onOk={insertImageOk}
     >
+      <FileUpload type="drag" returnImageUrl={returnImage} />
       <p className="tc mt-10">或</p>
       <Input
         placeholder="输入网络图片地址"
@@ -322,14 +323,18 @@ const Write = props => {
       dispatch({
         type: 'write/publish',
         payload: {
-          publishUserId: 1,
-          articleType: 2,
+          publishUserId: account.id,
+          articleType:
+            coverImageUrl === '' ||
+            coverImageUrl === null ||
+            coverImageUrl === undefined
+              ? 2
+              : 1,
           isAppoint: 0,
-          markdown,
           title,
           tags: [selectedTag],
           categoryId: selectedCategory,
-          coverImageUrl,
+          articleCover: coverImageUrl,
           content: ReactDOMServer.renderToString(
             <MathJax.Provider input="tex">
               <Markdown markdown={markdown} />
@@ -529,7 +534,7 @@ const Write = props => {
           </Button>
           <Dropdown overlay={writeMenu} trigger={['click']}>
             <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-              <UserAvatar src={account.avatar} />
+              <UserAvatar src={account.face} />
             </a>
           </Dropdown>
           {visible && (

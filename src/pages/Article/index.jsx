@@ -93,12 +93,6 @@ const Article = props => {
                     </div>
                   </div>
                 </div>
-                {detail && detail.cover && (
-                  <div>
-                    <img style={{ width: '100%' }} src={detail.cover} />
-                  </div>
-                )}
-
                 <h1 className="mt-15m fw-700 mb-15m">{detail.title}</h1>
                 <div className="markdown-body ft-16">
                   <MathJax.Provider>

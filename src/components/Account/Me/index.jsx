@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { Form, Input, Row, Col, Avatar, Button, Tag } from 'antd'
 import { connect } from 'dva'
-import storageHelper from '@/utils/storage'
 
 const Me = props => {
   const { dispatch, account, history, face } = props
@@ -12,7 +11,7 @@ const Me = props => {
     }
     dispatch({
       type: 'user/account',
-      payload: { userId: storageHelper.get('user').id },
+      payload: { userId: account.id },
       callback(res) {
         if (res.status === 200) {
           const account = res.data
@@ -32,7 +31,7 @@ const Me = props => {
     if (dispatch) {
       dispatch({
         type: 'user/setAccount',
-        payload: { ...values, face, id: form.getFieldValue('id') },
+        payload: { ...values, face, id: account.id },
       })
     }
   }
@@ -45,15 +44,15 @@ const Me = props => {
             <Form.Item disabled name="id" label="主键"></Form.Item>
             <Form.Item
               name="mobile"
-              label="邮箱"
+              label="手机号"
               rules={[
                 {
                   type: 'mobile',
-                  message: '不是有效的电子邮箱',
+                  message: '不是有效的手机号',
                 },
               ]}
             >
-              <Input disabled placeholder="输入您的电子邮箱" />
+              <Input disabled placeholder="输入您的手机号" />
             </Form.Item>
             <Form.Item name="nickname" label="昵称">
               <Input placeholder="输入您的昵称" />

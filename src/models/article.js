@@ -52,15 +52,15 @@ export default {
     },
 
     *hot({ payload }, { call, put }) {
-      // const { status, data } = yield call(getHotArticles, payload)
-      // if (status === 200) {
-      //   yield put({
-      //     type: 'handle',
-      //     payload: {
-      //       hots: data
-      //     }
-      //   })
-      // }
+      const { status, data } = yield call(getHotArticles, payload)
+      if (status === 200) {
+        yield put({
+          type: 'handle',
+          payload: {
+            hots: data,
+          },
+        })
+      }
     },
 
     *detail({ payload }, { call, put }) {
@@ -89,15 +89,15 @@ export default {
     },
 
     *tags({ payload }, { call, put }) {
-      // const { status, data } = yield call(getTags, payload)
-      // if (status === 200) {
-      //   yield put({
-      //     type: 'handle',
-      //     payload: {
-      //       tags: data
-      //     }
-      //   })
-      // }
+      const { status, data } = yield call(getTags, payload)
+      if (status === 200) {
+        yield put({
+          type: 'handle',
+          payload: {
+            tags: data,
+          },
+        })
+      }
     },
 
     *addNoLoginComment({ payload }, { call, put }) {

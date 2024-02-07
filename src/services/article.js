@@ -15,7 +15,7 @@ export async function getArticles(params) {
 
 // 获取热门文章列表 todo
 export async function getHotArticles() {
-  return request('/api/test')
+  return request('/api/service-article/portal/article/hotList')
 }
 
 // 获取文章详情
@@ -45,7 +45,7 @@ export async function createComment(data) {
 
 // 获取tags todo
 export async function getTags() {
-  return request('/api/test')
+  return request('/api/service-admin/tagMng/getCatList', { method: 'POST' })
 }
 
 // 文章点赞 todo

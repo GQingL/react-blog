@@ -1,22 +1,16 @@
+import { message } from 'antd'
 import { uploadImg } from '@/services/file'
 
 export default {
   namespace: 'file',
-  state: {
-    uploadUrl: '',
-  },
+  state: {},
   effects: {
-    *uploadImg({ payload }, { call, put }) {
-      console.log(payload)
-      const { status, data } = yield call(uploadImg, payload)
-      if (status === 200) {
-        yield put({
-          type: 'handle',
-          payload: {
-            uploadUrl: data,
-          },
-        })
+    *uploadImg({ payload, callback }, { call }) {
+      const { status, data, msg } = yield call(uploadImg, payload)
+      if (status !== 200) {
+        message.error(msg)
       }
+      if (callback) callback(data)
     },
   },
 }

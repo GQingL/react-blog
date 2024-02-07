@@ -19,10 +19,10 @@ export default {
     markdown: '',
     title: null,
     selectedCategory: null,
-    selectedTag: null,
+    selectedTag: [],
   },
   effects: {
-    *saveDraft({ payload, callback }, { call, put }) {
+    *saveDraft({ payload }, { call }) {
       const { status, data } = yield call(createDraft, payload)
       if (status === 200) {
         history.push(`/write/draft/${data.id}`)
@@ -62,19 +62,18 @@ export default {
           type: 'categoriesHandle',
           payload: {
             categories: data,
-            selectedCategory: data.length > 0 && data[0].category.id,
-            tags: data.length > 0 ? data.tagList : undefined,
-            selectedTag:
-              data.length > 0 &&
-              data[0].tagList !== undefined &&
-              data[0].tagList.length > 0 &&
-              data[0].tagList[0].id,
+            selectedCategory: '',
+            tags:
+              data.length > 0 && data.tagList !== null
+                ? data.tagList
+                : undefined,
+            selectedTag: [],
           },
         })
       }
     },
 
-    *updateDraft({ payload }, { call, put }) {
+    *updateDraft({ payload }, { call }) {
       const { status } = yield call(updateDraft, payload)
       if (status === 200) {
         message.success('保存草稿成功')
@@ -91,7 +90,7 @@ export default {
       }
     },
 
-    *publish({ payload, callback }, { call, put }) {
+    *publish({ payload }, { call, put }) {
       const { status } = yield call(createPublish, payload)
       if (status === 200) {
         message.success('发布文章成功')
@@ -135,7 +134,10 @@ export default {
       return {
         ...state,
         tags: payload.tags,
-        selectedTag: payload.tags.length > 0 ? payload.tags[0].id : null,
+        selectedTag:
+          payload.tags != null && payload.tags.length > 0
+            ? [payload.tags[0].id]
+            : null,
       }
     },
 

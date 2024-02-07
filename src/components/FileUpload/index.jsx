@@ -1,24 +1,31 @@
 import React, { useState } from 'react'
 import { Upload, message } from 'antd'
-import moment from 'moment'
 import { getDvaApp } from 'umi'
 import { PlusOutlined, LoadingOutlined, InboxOutlined } from '@ant-design/icons'
+import storageHelper from '@/utils/storage'
 
 const { Dragger } = Upload
 
-const UploadToOss = (path, file) => {
-  return new Promise((resolve, reject) => {
-    console.log(file)
-    getDvaApp()._store.dispatch({
-      type: 'file/uploadImg',
-      payload: { file: file, userId: 1 },
-    })
-  })
+const getBase64 = (img, callback) => {
+  const reader = new FileReader()
+  reader.addEventListener('load', () => callback(reader.result))
+  reader.readAsDataURL(img)
 }
 
-const filePath = file => {
-  // 上传文件路径和名称
-  return `${moment().format('YYYYMMDD')}/${file.uid}.${file.type.split('/')[1]}`
+/**
+ * base64转blob文件对象
+ * @param {*} base64String
+ * @returns
+ */
+function base64ToBlob(base64String) {
+  const base64 = base64String.substring(base64String.indexOf(',') + 1)
+  const byteCharacters = window.atob(base64)
+  const byteNumbers = new Array(byteCharacters.length)
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i)
+  }
+  const byteArray = new Uint8Array(byteNumbers)
+  return new Blob([byteArray], { type: 'image/jpeg' }) // 根据实际情况设置MIME类型
 }
 
 const FileUpload = props => {
@@ -38,14 +45,6 @@ const FileUpload = props => {
     if (!isLt4M) {
       message.error('图片必须小于4M')
     }
-    UploadToOss(filePath(file), file)
-      .then(data => {
-        setImageUrl(data.url)
-        returnImageUrl(data.url)
-      })
-      .catch(error => {
-        console.log(error)
-      })
     return isJpgOrPng && isLt4M
   }
 
@@ -54,8 +53,38 @@ const FileUpload = props => {
       setLoading(true)
     }
     if (info.file.status === 'done') {
-      console.log(info)
+      getBase64(info.file.originFileObj, url => {
+        const blob = base64ToBlob(url)
+        UploadToMinIo(blob, url)
+      })
     }
+  }
+
+  /**
+   * 上传文件
+   * @param {*} file blob文件对象
+   * @returns
+   */
+  const UploadToMinIo = (file, url) => {
+    const user = storageHelper.get('user')
+    const formData = new FormData()
+    formData.append('file', file, 'image.jpg')
+    formData.append('userId', user.id)
+    return new Promise((resolve, reject) => {
+      getDvaApp()._store.dispatch({
+        type: 'file/uploadImg',
+        payload: formData,
+        callback(response) {
+          if (response !== undefined && response !== null && response !== '') {
+            setLoading(false)
+            setImageUrl(url)
+            returnImageUrl(response)
+          } else {
+            setLoading(false)
+          }
+        },
+      })
+    })
   }
 
   const uploadButton = (
@@ -64,7 +93,6 @@ const FileUpload = props => {
       <div className="ant-upload-text">Upload</div>
     </div>
   )
-
   if (type === 'click') {
     return (
       <Upload

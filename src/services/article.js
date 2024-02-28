@@ -1,9 +1,13 @@
 import { stringify } from 'qs'
 import request from '@/utils/request'
 
-// 获取分类
+// 获取分类和标签
+export async function getCategoriesAndTags() {
+  return request('/api/service-article/categoryMng/getCatsAndTags')
+}
+
 export async function getCategories() {
-  return request('/api/service-admin/categoryMng/getCats')
+  return request('/api/service-article/categoryMng/getCats')
 }
 
 // 获取文章列表
@@ -45,7 +49,7 @@ export async function createComment(data) {
 
 // 获取tags todo
 export async function getTags() {
-  return request('/api/service-admin/tagMng/getCatList', { method: 'POST' })
+  return request('/api/service-article/tagMng/getCatList', { method: 'POST' })
 }
 
 // 文章点赞 todo

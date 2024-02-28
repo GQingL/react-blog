@@ -18,23 +18,7 @@ const tabs = [
     icon: 'home',
     path: '/',
   },
-  // {
-  //   title: '文章',
-  //   key: 'articles',
-  //   key2: 'all',
-  //   icon: 'file-done',
-  //   path: '/home/articles/all'
-  // },
-  // {
-  //   title: '教程',
-  //   key: 'course',
-  //   key2: 'all',
-  //   icon: 'project',
-  //   path: '/home/course/all'
-  // }
 ]
-
-// const categories = null
 
 const MainHeader = props => {
   const { dispatch, categories, account, pathname } = props
@@ -45,7 +29,12 @@ const MainHeader = props => {
       dispatch({ type: 'article/categories' })
     }
   }, [])
-
+  console.log(categories)
+  if (categories.length > 0) {
+    categories.forEach((value, category) => {
+      console.log(category)
+    })
+  }
   const showDrawer = () => {
     setVisible(true)
   }
@@ -100,20 +89,20 @@ const MainHeader = props => {
                 ))}
               {categories.length > 0 &&
                 categories.map(item => {
-                  return item.tags.length > 0 ? (
+                  return categories.length > 0 ? (
                     <SubMenu
                       title={
                         <span className="submenu-title-wrapper">
                           {item.name}
                         </span>
                       }
-                      key={`/home/${item.en_name}`}
+                      key={`/home/${item.name}`}
                     >
                       {item.tags.map(tag => (
-                        <Menu.Item key={`/home/${item.en_name}/${tag.name}`}>
+                        <Menu.Item key={`/home/${item.name}/${tag.name}`}>
                           <Link
                             to={{
-                              pathname: `/home/${item.en_name}/${tag.name}`,
+                              pathname: `/home/${item.name}/${tag.name}`,
                               state: { category: item.id, tag: tag.id },
                             }}
                           >
@@ -123,10 +112,10 @@ const MainHeader = props => {
                       ))}
                     </SubMenu>
                   ) : (
-                    <Menu.Item key={`/home/${item.en_name}`}>
+                    <Menu.Item key={`/home/${item.name}`}>
                       <Link
                         to={{
-                          pathname: `/home/${item.en_name}`,
+                          pathname: `/home/${item.name}`,
                           state: { category: item.id },
                         }}
                       >
@@ -234,9 +223,9 @@ const MainHeader = props => {
                 </Link>
               </Menu.Item>
             ))}
-          {categories &&
+          {categories.length > 0 &&
             categories.map(item => {
-              return item.tags.length > 0 ? (
+              return categories.length > 0 ? (
                 <SubMenu
                   title={
                     <span className="submenu-title-wrapper">{item.name}</span>
@@ -247,7 +236,7 @@ const MainHeader = props => {
                     <Menu.Item key={`${item.id}-${tag.id}`}>
                       <Link
                         to={{
-                          pathname: `/home/${item.en_name}/${tag.name}`,
+                          pathname: `/home/${item.name}/${tag.name}`,
                           state: { category: item.id, tag: tag.id },
                         }}
                       >
@@ -260,7 +249,7 @@ const MainHeader = props => {
                 <Menu.Item key={item.id}>
                   <Link
                     to={{
-                      pathname: `/home/${item.en_name}`,
+                      pathname: `/home/${item.name}`,
                       state: { category: item.id },
                     }}
                   >

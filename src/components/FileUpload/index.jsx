@@ -48,16 +48,13 @@ const FileUpload = props => {
     return isJpgOrPng && isLt4M
   }
 
-  const onChange = info => {
-    if (info.file.status === 'uploading') {
-      setLoading(true)
-    }
-    if (info.file.status === 'done') {
-      getBase64(info.file.originFileObj, url => {
-        const blob = base64ToBlob(url)
-        UploadToMinIo(blob, url)
-      })
-    }
+  const customRequest = info => {
+    getBase64(info.file, async url => {
+      const blob = base64ToBlob(url)
+      await UploadToMinIo(blob, url)
+      info.onSuccess(1)
+      console.log(1)
+    })
   }
 
   /**
@@ -96,13 +93,13 @@ const FileUpload = props => {
   if (type === 'click') {
     return (
       <Upload
-        name="封面"
+        name="fm"
         listType="picture-card"
         className="avatar-uploader"
         style={{ width: 128, height: 128 }}
         showUploadList={false}
         beforeUpload={beforeUpload}
-        onChange={onChange}
+        customRequest={customRequest}
       >
         {imageUrl ? (
           <img src={imageUrl} alt="" style={{ width: '100%' }} />
@@ -115,7 +112,11 @@ const FileUpload = props => {
 
   if (type === 'drag') {
     return (
-      <Dragger name="拖拽" onChange={onChange} beforeUpload={beforeUpload}>
+      <Dragger
+        name="tz"
+        customRequest={customRequest}
+        beforeUpload={beforeUpload}
+      >
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>

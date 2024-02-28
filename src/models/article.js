@@ -27,15 +27,15 @@ export default {
   },
   effects: {
     *categories({ payload }, { call, put }) {
-      // const { status, data } = yield call(getCategories, payload)
-      // if (status === 200) {
-      //   yield put({
-      //     type: 'handle',
-      //     payload: {
-      //       categories: data
-      //     }
-      //   })
-      // }
+      const { status, data } = yield call(getCategories, payload)
+      if (status === 200) {
+        yield put({
+          type: 'handle',
+          payload: {
+            categories: data,
+          },
+        })
+      }
     },
 
     *articles({ payload }, { call, put }) {

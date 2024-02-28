@@ -50,8 +50,7 @@ const Content = props => {
     <div>
       <h4 style={{ marginBottom: 16 }}>分类</h4>
       <div>
-        {/* {categories && <CheckTag checkTagHandle={checkTagHandle} data={categories} />} */}
-        {categories &&
+        {categories.length > 0 &&
           categories.map(categories => (
             <CheckableTag
               key={categories.category.name}
@@ -392,9 +391,13 @@ const Write = props => {
         type: 'write/setMarkdown',
         payload: {
           markdown: [
-            markdown.substring(0, selectionStart),
+            markdown === null || markdown === undefined
+              ? ''
+              : markdown.substring(0, selectionStart),
             data,
-            markdown.substring(selectionEnd),
+            markdown === null || markdown === undefined
+              ? ''
+              : markdown.substring(selectionEnd),
           ].join(''),
         },
       })

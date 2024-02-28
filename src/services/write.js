@@ -37,7 +37,7 @@ export async function deleteDraft(data) {
 
 // 获到标签和分类
 export async function getCategories() {
-  return request('/api/service-admin/categoryMng/getCats')
+  return request('/api/service-article/categoryMng/getCatsAndTags')
 }
 
 // 发布文章

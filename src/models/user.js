@@ -78,13 +78,10 @@ export default {
     },
 
     *setAccount({ payload, callback }, { call, put }) {
-      const { status, data } = yield call(modifyAccount, payload)
+      const { status } = yield call(modifyAccount, payload)
       if (status === 200) {
         yield put({
           type: 'handle',
-          payload: {
-            account: data,
-          },
         })
         message.success('更新成功')
       }

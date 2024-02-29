@@ -29,12 +29,10 @@ const MainHeader = props => {
       dispatch({ type: 'article/categories' })
     }
   }, [])
-  console.log(categories)
-  if (categories.length > 0) {
-    categories.forEach((value, category) => {
-      console.log(category)
-    })
+  const componentWillUnmount = () => {
+    this.setState = () => false
   }
+  console.log('人员信息: ' + account)
   const showDrawer = () => {
     setVisible(true)
   }
@@ -88,7 +86,7 @@ const MainHeader = props => {
                   </Menu.Item>
                 ))}
               {categories.length > 0 &&
-                categories.map(item => {
+                categories.forEach(item => {
                   return categories.length > 0 ? (
                     <SubMenu
                       title={
@@ -98,18 +96,18 @@ const MainHeader = props => {
                       }
                       key={`/home/${item.name}`}
                     >
-                      {item.tags.map(tag => (
+                      {/* {item.tags.map(tag => (
                         <Menu.Item key={`/home/${item.name}/${tag.name}`}>
                           <Link
                             to={{
                               pathname: `/home/${item.name}/${tag.name}`,
-                              state: { category: item.id, tag: tag.id },
+                              state: { category: item.id, tag: tag.id }
                             }}
                           >
                             {tag.name}
                           </Link>
                         </Menu.Item>
-                      ))}
+                      ))} */}
                     </SubMenu>
                   ) : (
                     <Menu.Item key={`/home/${item.name}`}>
@@ -144,10 +142,6 @@ const MainHeader = props => {
                   <Menu.Item key="drafts-key">
                     <Link to="/write/drafts">草稿箱</Link>
                   </Menu.Item>
-                  {/* <Menu.Divider />
-                  <Menu.Item key="write-course-key">
-                    <Link to="/write/course">写教程</Link>
-                  </Menu.Item> */}
                   <Menu.Divider />
                   {account.sex === 'ADMIN' ? (
                     <Menu.Item key="manager-center-key">
@@ -206,6 +200,7 @@ const MainHeader = props => {
         closable
         onClose={onClose}
         visible={visible}
+        componentWillUnmount={componentWillUnmount}
         bodyStyle={{ padding: 0 }}
       >
         <Menu onClick={handleClick} selectedKeys={['home']} mode="inline">
@@ -232,7 +227,7 @@ const MainHeader = props => {
                   }
                   key={item.id}
                 >
-                  {item.tags.map(tag => (
+                  {/* {item.tags.map(tag => (
                     <Menu.Item key={`${item.id}-${tag.id}`}>
                       <Link
                         to={{
@@ -243,7 +238,7 @@ const MainHeader = props => {
                         {tag.name}
                       </Link>
                     </Menu.Item>
-                  ))}
+                  ))} */}
                 </SubMenu>
               ) : (
                 <Menu.Item key={item.id}>

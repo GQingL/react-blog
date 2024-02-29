@@ -41,7 +41,6 @@ const Me = props => {
       <Row>
         <Col span={12}>
           <Form form={form} layout="vertical" onFinish={onFinish}>
-            <Form.Item disabled name="id" label="主键"></Form.Item>
             <Form.Item
               name="mobile"
               label="手机号"

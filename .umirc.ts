@@ -4,8 +4,7 @@ const REACT_APP_ENV = 'local'
 
 export default defineConfig({
   title: '个人网站首页',
-  favicon:
-    'https://immisso-upload.oss-cn-hangzhou.aliyuncs.com/20200517/rc-upload-1589714215963-2.png',
+  favicon: 'https://guangqingl.top/portrait/240121A4N57DZHX4/image.jpg',
   proxy: {
     '/api': {
       target: 'http://127.0.0.1:8700',

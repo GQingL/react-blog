@@ -51,9 +51,8 @@ const FileUpload = props => {
   const customRequest = info => {
     getBase64(info.file, async url => {
       const blob = base64ToBlob(url)
-      await UploadToMinIo(blob, url)
+      UploadToMinIo(blob, url, info.file.name)
       info.onSuccess(1)
-      console.log(1)
     })
   }
 
@@ -62,10 +61,11 @@ const FileUpload = props => {
    * @param {*} file blob文件对象
    * @returns
    */
-  const UploadToMinIo = (file, url) => {
+  const UploadToMinIo = (file, url, fileName) => {
+    console.log(file)
     const user = storageHelper.get('user')
     const formData = new FormData()
-    formData.append('file', file, 'image.jpg')
+    formData.append('file', file, fileName)
     formData.append('userId', user.id)
     return new Promise((resolve, reject) => {
       getDvaApp()._store.dispatch({

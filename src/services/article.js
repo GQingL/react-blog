@@ -31,20 +31,15 @@ export async function getArticleDetail(params) {
 
 // 获取用户评论 todo
 export async function getComments(params) {
-  return request('/api/test')
-}
-
-// 未登录添加评论 todo
-export async function createNoLoginComment(data) {
-  return request('/api/test', {
-    method: 'POST',
-    data,
-  })
+  return request(`/api/service-article/comment/list?${stringify(params)}`)
 }
 
 // 添加评论
 export async function createComment(data) {
-  return request('/api/create/comment', { method: 'POST', data })
+  return request('/api/service-article/comment/createComment', {
+    method: 'POST',
+    data,
+  })
 }
 
 // 获取tags todo

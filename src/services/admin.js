@@ -3,8 +3,8 @@ import request from '@/utils/request'
 
 // todo
 // 获取评论
-export async function getComments() {
-  return request('/api/test')
+export async function getComments(data) {
+  return request(`/api/service-article/comment/list?${stringify(data)}`)
 }
 
 // 获取分类列表

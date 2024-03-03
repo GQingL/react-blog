@@ -3,13 +3,18 @@ import { Button, Input, Form } from 'antd'
 import { connect } from 'dva'
 
 const LoginCommentForm = props => {
-  const { id, author, dispatch } = props
+  const { author, id, dispatch } = props
   const [form] = Form.useForm()
   const onFinish = values => {
     if (dispatch) {
       dispatch({
         type: 'article/addComment',
-        payload: { ...values, article_id: id, author },
+        payload: {
+          ...values,
+          articleId: id,
+          commentUserId: author.id,
+          fatherId: '0',
+        },
       })
     }
     form.resetFields()

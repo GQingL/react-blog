@@ -32,7 +32,6 @@ const MainHeader = props => {
   const componentWillUnmount = () => {
     this.setState = () => false
   }
-  console.log('人员信息: ' + account)
   const showDrawer = () => {
     setVisible(true)
   }

@@ -32,7 +32,6 @@ const Article = props => {
     dispatch,
     loading,
     detail,
-    hots,
     isFavorite,
     favoriteCount,
     match: {

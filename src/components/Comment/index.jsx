@@ -4,7 +4,6 @@ import { Comment, Divider, Tooltip, List, Card } from 'antd'
 import moment from 'moment'
 import UserAvatar from '@/components/UserAvatar'
 import LoginCommentForm from '../forms/LoginCommentForm'
-import NoLoginCommentForm from '../forms/NoLoginCommentForm'
 
 moment.locale('zh-cn')
 const Content = ({ content }) => <p>{content}</p>
@@ -18,10 +17,10 @@ const Datetime = ({ time }) => {
 }
 
 const AddComment = props => {
-  const { account, dispatch, id, author, comments, loading } = props
+  const { account, dispatch, id, comments, loading } = props
   useEffect(() => {
     if (dispatch) {
-      dispatch({ type: 'article/comments', payload: { id } })
+      dispatch({ type: 'article/comments', payload: { articleId: id } })
     }
   }, [])
   return (
@@ -40,10 +39,10 @@ const AddComment = props => {
         renderItem={item => (
           <List.Item>
             <Comment
-              author={item.user.nickname}
-              avatar={<UserAvatar src={item.user.avatar} />}
+              author={item.commentUserNickname}
+              avatar={<UserAvatar src={item.commentUserFace} />}
               content={<Content content={item.content} />}
-              datetime={<Datetime time={item.createdAt} />}
+              datetime={<Datetime time={item.createTime} />}
             />
           </List.Item>
         )}
@@ -51,11 +50,11 @@ const AddComment = props => {
       <Divider />
       {account && account.id ? (
         <Comment
-          avatar={<UserAvatar src={account.avatar} />}
-          content={<LoginCommentForm id={id} author={author} />}
+          avatar={<UserAvatar src={account.face} />}
+          content={<LoginCommentForm id={id} author={account} />}
         />
       ) : (
-        <NoLoginCommentForm id={id} author={author} />
+        <Comment> 请登陆后再评论 </Comment>
       )}
     </Card>
   )

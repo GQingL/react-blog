@@ -6,7 +6,6 @@ import {
   getArticleDetail,
   getComments,
   getTags,
-  createNoLoginComment,
   createComment,
   updateFavorite,
   getIsFavorite,
@@ -77,15 +76,15 @@ export default {
     },
 
     *comments({ payload }, { call, put }) {
-      // const { status, data } = yield call(getComments, payload)
-      // if (status === 200) {
-      //   yield put({
-      //     type: 'handle',
-      //     payload: {
-      //       comments: data
-      //     }
-      //   })
-      // }
+      const { status, data } = yield call(getComments, payload)
+      if (status === 200) {
+        yield put({
+          type: 'handle',
+          payload: {
+            comments: data.rows,
+          },
+        })
+      }
     },
 
     *tags({ payload }, { call, put }) {
@@ -96,16 +95,6 @@ export default {
           payload: {
             tags: data,
           },
-        })
-      }
-    },
-
-    *addNoLoginComment({ payload }, { call, put }) {
-      const { status, data } = yield call(createNoLoginComment, payload)
-      if (status === 200) {
-        yield put({
-          type: 'createCommentHandle',
-          payload: data,
         })
       }
     },
@@ -161,6 +150,7 @@ export default {
       return { ...state, ...payload }
     },
     createCommentHandle(state, { payload }) {
+      console.log(payload)
       return {
         ...state,
         comments: [payload, ...state.comments],

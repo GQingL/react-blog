@@ -1,42 +1,33 @@
 import React, { useEffect } from 'react'
 import { Tag, Card } from 'antd'
-import { Link } from 'umi'
 import { connect } from 'dva'
 
 const Tags = props => {
-  const { dispatch, tags, loading } = props
+  const { dispatch, holidays, loading } = props
   useEffect(() => {
     if (dispatch) {
-      dispatch({ type: 'article/tags' })
+      dispatch({ type: 'article/holiday' })
     }
   }, [])
-
   return (
     <Card
       loading={loading}
       size="small"
       bordered={false}
-      title="常用标签"
+      title="假期倒计时"
       className="mt-20"
     >
-      {tags &&
-        tags.map(tag => (
-          <Tag key={tag.en_name} className="mb-10">
-            <Link
-              to={{
-                pathname: `/home/${tag.category.en_name}/${tag.name}`,
-                state: { category: tag.category_id, tag: tag.id },
-              }}
-            >
-              {tag.name}
-            </Link>
+      {holidays &&
+        holidays.map(tag => (
+          <Tag key={tag} className="mb-10">
+            {tag}
           </Tag>
         ))}
     </Card>
   )
 }
 
-export default connect(({ article: { tags }, loading }) => ({
-  tags,
-  loading: loading.effects['article/tags'],
+export default connect(({ article: { holidays }, loading }) => ({
+  holidays,
+  loading: loading.effects['article/holiday'],
 }))(Tags)

@@ -9,6 +9,7 @@ import {
   createComment,
   updateFavorite,
   getIsFavorite,
+  getHoliday,
 } from '@/services/article'
 
 export default {
@@ -20,6 +21,7 @@ export default {
     comments: [],
     tags: [],
     detail: {},
+    holidays: [],
     articleCount: 0,
     isFavorite: false,
     favoriteCount: 0,
@@ -89,11 +91,24 @@ export default {
 
     *tags({ payload }, { call, put }) {
       const { status, data } = yield call(getTags, payload)
+      console.log(data)
       if (status === 200) {
         yield put({
           type: 'handle',
           payload: {
             tags: data,
+          },
+        })
+      }
+    },
+
+    *holiday({ payload }, { call, put }) {
+      const { status, data } = yield call(getHoliday, payload)
+      if (status === 200) {
+        yield put({
+          type: 'handle',
+          payload: {
+            holidays: data,
           },
         })
       }

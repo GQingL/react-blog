@@ -56,3 +56,8 @@ export async function updateFavorite(data) {
 export async function getIsFavorite(params) {
   return request('/api/test')
 }
+
+// 是否已点赞 todo
+export async function getHoliday(params) {
+  return request('/api/service-article/portal/article/vacation')
+}

@@ -7,7 +7,7 @@ export default defineConfig({
   favicon: 'https://guangqingl.top/portrait/240121A4N57DZHX4/image.jpg',
   proxy: {
     '/api': {
-      target: 'http://127.0.0.1:8700',
+      target: 'http://117.72.13.77:8700',
       pathRewrite: { '^/api': '' },
       changeOrigin: true,
     },

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'dva'
-import { Comment, Divider, Tooltip, List, Card } from 'antd'
+import { Divider, Tooltip, List, Card } from 'antd'
+import { Comment } from '@ant-design/compatible'
 import moment from 'moment'
 import UserAvatar from '@/components/UserAvatar'
 import LoginCommentForm from '../forms/LoginCommentForm'

@@ -91,7 +91,6 @@ export default {
 
     *tags({ payload }, { call, put }) {
       const { status, data } = yield call(getTags, payload)
-      console.log(data)
       if (status === 200) {
         yield put({
           type: 'handle',
@@ -165,7 +164,6 @@ export default {
       return { ...state, ...payload }
     },
     createCommentHandle(state, { payload }) {
-      console.log(payload)
       return {
         ...state,
         comments: [payload, ...state.comments],

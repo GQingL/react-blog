@@ -1,31 +1,17 @@
 import React, { useEffect } from 'react'
-import { Layout, Card, List, Row, Col, Divider, Tooltip } from 'antd'
+import { Layout, Card } from 'antd'
 import moment from 'moment'
-import { Link } from 'umi'
 import { connect } from 'dva'
-import {
-  createFromIconfontCN,
-  WeiboCircleOutlined,
-  GlobalOutlined,
-  GithubOutlined,
-  EyeOutlined,
-  LikeOutlined,
-  MessageOutlined,
-} from '@ant-design/icons'
+import { LikeOutlined, MessageOutlined } from '@ant-design/icons'
 import MathJax from 'react-mathjax'
 import Header from '@/components/Header'
 import UserAvatar from '@/components/UserAvatar'
-import ArticleAnchor from '@/components/Anchor'
 import AddComment from '@/components/Comment'
-import Markdown from '@/components/Markdown'
 
 import styles from './index.less'
 import './markdown.css'
 
 const { Content } = Layout
-const IconFont = createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_1439645_kzb7blmpkvc.js',
-})
 
 const Article = props => {
   const {
@@ -98,129 +84,12 @@ const Article = props => {
                     <div
                       dangerouslySetInnerHTML={{ __html: detail.content }}
                     ></div>
-                    {/* <Markdown markdown={detail.content} /> */}
                   </MathJax.Provider>
                 </div>
               </div>
             </Card>
             <AddComment id={id} author={detail.uid} />
           </div>
-          {/* <div className={styles.articleContainerSider}>
-            <Card
-              title="关于作者"
-              bordered={false}
-              size="small"
-              loading={loading}
-            >
-              <div style={{ display: 'flex', marginBottom: 20 }}>
-                {detail && detail.user && detail.user.avatar && (
-                  <UserAvatar size="large" src={detail.user.avatar} />
-                )}
-                <div className="pl-1m">
-                  <h5>{detail.user && detail.user.nickname}</h5>
-                  <small>{detail.user && detail.user.profession}</small>
-                </div>
-              </div>
-              <Row
-                className="tc"
-                type="flex"
-                align="middle"
-                justify="space-between"
-              >
-                <Col span={8}>
-                  <h2 className="m-0">
-                    <b>{detail.user && detail.user.total_view}</b>
-                  </h2>
-                  <small>浏览</small>
-                </Col>
-                <Col span={8}>
-                  <h2 className="m-0">
-                    <b>{detail.user && detail.user.total_like}</b>
-                  </h2>
-                  <small>点赞</small>
-                </Col>
-                <Col span={8}>
-                  <h2 className="m-0">
-                    <b>{detail.user && detail.user.total_comment}</b>
-                  </h2>
-                  <small>评论</small>
-                </Col>
-              </Row>
-              <Divider dashed className="mb-0" />
-              <div className="ft-16 ml-10 mt-10">
-                {detail}
-                {detail.user && detail.user.website && (
-                  <Tooltip title={detail.user.website}>
-                    <a href={detail.user.website} className="mr-10">
-                      <GlobalOutlined />
-                    </a>
-                  </Tooltip>
-                )}
-                {detail.user && detail.user.github && (
-                  <Tooltip title={detail.user.github}>
-                    <a href={detail.user.github} className="mr-10">
-                      <GithubOutlined />
-                    </a>
-                  </Tooltip>
-                )}
-                {detail.user && detail.user.weibo && (
-                  <Tooltip title={detail.user.weibo}>
-                    <a href={detail.user.weibo} className="mr-10">
-                      <WeiboCircleOutlined />
-                    </a>
-                  </Tooltip>
-                )}
-                {detail.user && detail.user.gitee && (
-                  <Tooltip title={detail.user.gitee}>
-                    <a href={detail.user.gitee}>
-                      <IconFont type="icon-gitee" />
-                    </a>
-                  </Tooltip>
-                )}
-              </div>
-            </Card>
-            <Card
-              title="相关文章"
-              size="small"
-              bordered={false}
-              loading={loading2}
-              className="mt-20"
-            >
-              <List
-                itemLayout="vertical"
-                dataSource={hots}
-                bordered={false}
-                size="small"
-                split={false}
-                renderItem={item => (
-                  <List.Item
-                    className="pl-0"
-                    actions={[
-                      <span key="1">
-                        <EyeOutlined />
-                        <span className="pl-2 pointer">{item.view}</span>
-                      </span>,
-                      <span key="2">
-                        <LikeOutlined />
-                        <span className="pl-2 pointer">{item.favorite}</span>
-                      </span>
-                    ]}
-                  >
-                    <Link
-                      to={`/article/${item.id}`}
-                      target="_block"
-                      style={{ color: '#000000a6' }}
-                    >
-                      {item.title}
-                    </Link>
-                  </List.Item>
-                )}
-              />
-            </Card>
-            {detail && detail.anchor && (
-              <ArticleAnchor anchors={JSON.parse(detail.anchor || '[]')} />
-            )}
-          </div> */}
           <div className={styles.articlePanel}>
             <div className={styles.articlePanelItem}>
               <div className={styles.articlePanelIcon}>

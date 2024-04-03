@@ -77,7 +77,7 @@ export default {
       })
     },
 
-    *setAccount({ payload, callback }, { call, put }) {
+    *setAccount({ payload }, { call, put }) {
       const { status } = yield call(modifyAccount, payload)
       if (status === 200) {
         yield put({
@@ -92,7 +92,6 @@ export default {
       return { ...state, ...payload }
     },
     changeAvatar(state) {
-      console.log(state)
       return { ...state, face: face[Math.floor(Math.random() * 4)] }
     },
   },

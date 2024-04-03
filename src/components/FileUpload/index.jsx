@@ -62,7 +62,6 @@ const FileUpload = props => {
    * @returns
    */
   const UploadToMinIo = (file, url, fileName) => {
-    console.log(file)
     const user = storageHelper.get('user')
     const formData = new FormData()
     formData.append('file', file, fileName)

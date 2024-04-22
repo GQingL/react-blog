@@ -29,7 +29,7 @@ export default {
     avatar: null,
   },
   effects: {
-    *sms({ payload, callback }, { call, put }) {
+    *sms() {
       // const response = yield call(getSMSCode, payload)
       // if (response.status === 200) {
       //   yield put({
@@ -42,7 +42,7 @@ export default {
       // }
     },
 
-    *login({ payload, callback }, { call, put }) {
+    *login({ payload, callback }, { call }) {
       const response = yield call(loginAccount, payload)
       if (response.status !== 200) {
         message.error(response.msg)
@@ -79,6 +79,7 @@ export default {
 
     *setAccount({ payload }, { call, put }) {
       const { status } = yield call(modifyAccount, payload)
+      console.log(status)
       if (status === 200) {
         yield put({
           type: 'handle',

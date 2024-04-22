@@ -1,11 +1,8 @@
 import { extend } from 'umi-request'
-import { message } from 'antd' // 提示框
+import { history, getDvaApp } from 'umi'
 import storageHelper from '@/utils/storage'
-import { stringify } from 'querystring'
-import { history } from 'umi'
 
 const request = extend({
-  // errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 })
 
@@ -20,17 +17,14 @@ request.interceptors.response.use(async response => {
     return res
   }
   if (res.status === 501 || res.status === 502) {
-    // 未登录错误码
-    message.error('请先登录')
+    // 清除用户状态
     storageHelper.clear('user')
-    // 跳转登录地址
-    // history.replace({
-    //   pathname: '/login',
-    //   search: stringify({
-    //     redirect: location.pathname
-    //   })
-    // })
-    history.push('/login')
+    // 未登录错误码
+    getDvaApp()
+      ._store.dispatch({
+        type: 'user/logout',
+      })
+      .then(() => history.push('/user/login'))
   }
   return res
 })

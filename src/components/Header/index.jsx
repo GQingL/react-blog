@@ -169,7 +169,7 @@ const MainHeader = props => {
             </Dropdown>
           ) : (
             <span>
-              <Link to="/login">登录</Link>
+              <Link to="/user/login">登录</Link>
             </span>
           )}
         </div>

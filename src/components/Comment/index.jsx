@@ -5,9 +5,21 @@ import { Comment } from '@ant-design/compatible'
 import moment from 'moment'
 import UserAvatar from '@/components/UserAvatar'
 import LoginCommentForm from '../forms/LoginCommentForm'
+import sanitizeHtml from 'sanitize-html'
 
 moment.locale('zh-cn')
-const Content = ({ content }) => <p>{content}</p>
+
+// 假设是sanitize函数的实现
+const sanitize = html =>
+  sanitizeHtml(html, {
+    allowedTags: [],
+    allowedAttributes: {},
+  })
+
+// 在Content组件中使用清理过的内容
+const Content = ({ content }) => (
+  <p dangerouslySetInnerHTML={{ __html: sanitize(content) }} />
+)
 
 const Datetime = ({ time }) => {
   return (
@@ -21,7 +33,11 @@ const AddComment = props => {
   const { account, dispatch, id, comments, loading } = props
   useEffect(() => {
     if (dispatch) {
-      dispatch({ type: 'article/comments', payload: { articleId: id } })
+      dispatch({ type: 'article/comments', payload: { articleId: id } }).catch(
+        error => {
+          console.error('获取评论失败:', error)
+        },
+      )
     }
   }, [])
   return (
@@ -36,7 +52,7 @@ const AddComment = props => {
         className="comment-list"
         itemLayout="horizontal"
         split={false}
-        dataSource={comments}
+        dataSource={comments || []}
         renderItem={item => (
           <List.Item>
             <Comment

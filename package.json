@@ -40,6 +40,7 @@
     "react-syntax-highlighter": "^12.2.1",
     "react-zmage": "^0.8.5-beta.31",
     "remark-math": "^2.0.1",
+    "sanitize-html": "^2.13.0",
     "umi": "^3.0.18",
     "umi-request": "^1.2.19",
     "yorkie": "^2.0.0"

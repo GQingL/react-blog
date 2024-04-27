@@ -16,17 +16,34 @@ request.interceptors.response.use(async response => {
     // 成功，则取出 data内容 直接返回
     return res
   }
-  if (res.status === 501 || res.status === 502) {
-    // 清除用户状态
-    storageHelper.clear('user')
-    // 未登录错误码
-    getDvaApp()
-      ._store.dispatch({
-        type: 'user/logout',
-      })
-      .then(() => history.push('/user/login'))
-  }
+  // 根据响应状态调用错误处理逻辑
+  handleError(res.status)
   return res
 })
+
+// 错误响应处理
+const handleError = status => {
+  switch (status) {
+    case 401:
+      // 未授权处理
+      break
+    case 400:
+      // 坏请求处理
+      break
+    case 501:
+    case 502:
+      // 清除用户状态并登出
+      storageHelper.clear('user')
+      getDvaApp()
+        ._store.dispatch({
+          type: 'user/logout',
+        })
+        .then(() => history.push('/user/login'))
+      break
+    default:
+      // 其他错误处理
+      break
+  }
+}
 
 export default request

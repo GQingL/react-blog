@@ -65,6 +65,7 @@ export default {
           },
         })
       }
+      return response
     },
 
     *logout({ payload }, { call, put }) {

@@ -6,26 +6,30 @@ import storageHelper from '@/utils/storage'
 
 const { Dragger } = Upload
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
-}
-
-/**
- * base64转blob文件对象
- * @param {*} base64String
- * @returns
- */
-function base64ToBlob(base64String) {
-  const base64 = base64String.substring(base64String.indexOf(',') + 1)
-  const byteCharacters = window.atob(base64)
-  const byteNumbers = new Array(byteCharacters.length)
-  for (let i = 0; i < byteCharacters.length; i++) {
-    byteNumbers[i] = byteCharacters.charCodeAt(i)
-  }
-  const byteArray = new Uint8Array(byteNumbers)
-  return new Blob([byteArray], { type: 'image/jpeg' }) // 根据实际情况设置MIME类型
+// 定义工具函数，用于处理Base64和Blob的转换
+const base64Util = {
+  getBase64(file, callback) {
+    const reader = new FileReader()
+    reader.addEventListener('load', () => callback(reader.result))
+    reader.addEventListener('error', () => {
+      console.error('Error occurred while reading the file.')
+    })
+    reader.readAsDataURL(file)
+  },
+  base64ToBlob(base64String) {
+    if (!base64String.startsWith('data:')) {
+      console.error('Invalid base64 string')
+      return null
+    }
+    const base64 = base64String.substring(base64String.indexOf(',') + 1)
+    const byteCharacters = window.atob(base64)
+    const byteNumbers = new Array(byteCharacters.length)
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i)
+    }
+    const byteArray = new Uint8Array(byteNumbers)
+    return new Blob([byteArray], { type: 'image/jpeg' })
+  },
 }
 
 const FileUpload = props => {
@@ -34,25 +38,31 @@ const FileUpload = props => {
   const [imageUrl, setImageUrl] = useState(null)
 
   const beforeUpload = file => {
-    const isJpgOrPng =
-      file.type === 'image/png' ||
-      file.type === 'image/jpeg' ||
-      file.type === 'image/gif'
+    const isJpgOrPng = ['image/png', 'image/jpeg', 'image/gif'].includes(
+      file.type,
+    )
     if (!isJpgOrPng) {
       message.error('你只能上传JPG/PNG格式的图片')
     }
-    const isLt4M = file.size / 1024 / 1024 < 4
+    // 包含4MB
+    const isLt4M = file.size / 1024 / 1024 <= 4
     if (!isLt4M) {
-      message.error('图片必须小于4M')
+      message.error('图片必须小于等于4M')
     }
     return isJpgOrPng && isLt4M
   }
 
   const customRequest = info => {
-    getBase64(info.file, async url => {
-      const blob = base64ToBlob(url)
-      UploadToMinIo(blob, url, info.file.name)
-      info.onSuccess(1)
+    base64Util.getBase64(info.file, async url => {
+      try {
+        const blob = base64Util.base64ToBlob(url)
+        if (!blob) throw new Error('Base64转换为Blob失败')
+        await UploadToMinIo(blob, url, info.file.name)
+        info.onSuccess(1)
+      } catch (error) {
+        console.error('上传过程中发生错误:', error)
+        message.error('文件上传失败')
+      }
     })
   }
 
@@ -61,26 +71,36 @@ const FileUpload = props => {
    * @param {*} file blob文件对象
    * @returns
    */
-  const UploadToMinIo = (file, url, fileName) => {
+  const UploadToMinIo = async (file, url, fileName) => {
     const user = storageHelper.get('user')
+    if (!user) {
+      throw new Error('用户信息未找到')
+    }
     const formData = new FormData()
     formData.append('file', file, fileName)
     formData.append('userId', user.id)
-    return new Promise((resolve, reject) => {
-      getDvaApp()._store.dispatch({
-        type: 'file/uploadImg',
-        payload: formData,
-        callback(response) {
-          if (response !== undefined && response !== null && response !== '') {
-            setLoading(false)
-            setImageUrl(url)
-            returnImageUrl(response)
-          } else {
-            setLoading(false)
-          }
-        },
+
+    try {
+      const response = await new Promise(resolve => {
+        getDvaApp()._store.dispatch({
+          type: 'file/uploadImg',
+          payload: formData,
+          callback: res => resolve(res),
+        })
       })
-    })
+      if (response) {
+        setLoading(false)
+        setImageUrl(url)
+        returnImageUrl(response)
+      } else {
+        setLoading(false)
+        message.error('上传响应无效')
+      }
+    } catch (error) {
+      setLoading(false)
+      console.error('上传失败:', error)
+      message.error('文件上传失败')
+    }
   }
 
   const uploadButton = (
@@ -89,8 +109,10 @@ const FileUpload = props => {
       <div className="ant-upload-text">Upload</div>
     </div>
   )
-  if (type === 'click') {
-    return (
+
+  return (
+    // 根据type渲染不同的上传组件
+    type === 'click' ? (
       <Upload
         name="fm"
         listType="picture-card"
@@ -106,11 +128,7 @@ const FileUpload = props => {
           uploadButton
         )}
       </Upload>
-    )
-  }
-
-  if (type === 'drag') {
-    return (
+    ) : (
       <Dragger
         name="tz"
         customRequest={customRequest}
@@ -122,7 +140,7 @@ const FileUpload = props => {
         <p className="ant-upload-text">点击或者拖拽图片到这个区域</p>
       </Dragger>
     )
-  }
+  )
 }
 
 export default FileUpload

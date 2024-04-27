@@ -5,36 +5,55 @@ import { connect } from 'dva'
 const Me = props => {
   const { dispatch, account, history, face } = props
   const [form] = Form.useForm()
-  useEffect(() => {
+
+  // 使用async/await处理异步逻辑
+  const fetchData = async () => {
     if (!account || !account.id) {
       history.push('/login')
+      return
     }
-    dispatch({
-      type: 'user/account',
-      payload: { userId: account.id },
-      callback(res) {
-        if (res.status === 200) {
-          const account = res.data
-          Object.keys(form.getFieldsValue()).forEach(key => {
-            const obj = {}
-            obj[key] = account[key] || null
-            form.setFieldsValue(obj)
-          })
-        }
-      },
-    })
-  }, [])
+    try {
+      const res = await dispatch({
+        type: 'user/account',
+        payload: { userId: account.id },
+      })
+      if (res.status === 200) {
+        const accountData = res.data
+        form.setFieldsValue(
+          Object.keys(form.getFieldsValue()).reduce(
+            (acc, key) => ({
+              ...acc,
+              [key]: accountData[key] || null,
+            }),
+            {},
+          ),
+        )
+      }
+    } catch (error) {
+      console.error('Error fetching account data:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+    // 将account加入依赖数组
+  }, [dispatch, form])
+
   const changeAvatar = () => {
     dispatch({ type: 'user/changeAvatar' })
   }
-  const onFinish = values => {
-    if (dispatch) {
-      dispatch({
+
+  const onFinish = async values => {
+    try {
+      await dispatch({
         type: 'user/setAccount',
         payload: { ...values, face, id: account.id },
       })
+    } catch (error) {
+      console.error('Error setting account data:', error)
     }
   }
+
   return (
     <>
       <h2>个人信息</h2>

@@ -1,13 +1,16 @@
 import { defineConfig } from 'umi'
 
-const REACT_APP_ENV = 'local'
+const PATH_DEV = 'http://127.0.0.1:8700'
+
+const PATH = 'http://117.72.13.77:8700'
+const FAVICON = 'https://guangqingl.top/portrait/240121A4N57DZHX4/image.jpg'
 
 export default defineConfig({
   title: '个人网站首页',
-  favicon: 'https://guangqingl.top/portrait/240121A4N57DZHX4/image.jpg',
+  favicon: FAVICON,
   proxy: {
     '/api': {
-      target: 'http://117.72.13.77:8700',
+      target: PATH,
       pathRewrite: { '^/api': '' },
       changeOrigin: true,
     },
@@ -153,30 +156,6 @@ export default defineConfig({
     },
     { webpack }: any,
   ) {
-    // 自定义 webpack 配置
-    // config.optimization.splitChunks({
-    //   chunks: 'all', // 共享所有 chunks 中的模块
-    //   minSize: 3000, // 最小模块大小
-    //   maxSize: 0, // 最大模块大小
-    //   minChunks: 1, // 最小共享次数
-    //   maxAsyncRequests: 6, // 最大异步请求数
-    //   maxInitialRequests: 3, // 最大初始化请求数
-    //   automaticNameDelimiter: '~', // 打包后的分割文件命名分隔符
-    //   name: true, // 打包后生成的分割文件命名是否需要根据生成块的名字
-    //   cacheGroups: {
-    //     vendors: {
-    //       // 生成一个 `vendors` 共享模块，包含 `node_modules` 中的所有模块
-    //       test: /[\\/]node_modules[\\/]/,
-    //       priority: -10,
-    //     },
-    //     default: {
-    //       // 共享模块的默认配置
-    //       minChunks: 2,
-    //       priority: -20,
-    //       reuseExistingChunk: true,
-    //     },
-    //   },
-    // })
     // 添加 MUI 的 babel 插件和样式文件的处理规则
     config.module
       .rule('mui')

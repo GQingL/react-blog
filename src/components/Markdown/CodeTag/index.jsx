@@ -1,61 +1,7 @@
 import React from 'react'
-// import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 
-import {
-  coy,
-  dark,
-  funky,
-  okaidia,
-  twilight,
-  solarizedlight,
-  tomorrow,
-  prism,
-  atomDark,
-  base16AteliersulphurpoolLight,
-  cb,
-  darcula,
-  duotoneDark,
-  duotoneEarth,
-  duotoneForest,
-  duotoneLight,
-  duotoneSea,
-  duotoneSpace,
-  ghcolors,
-  hopscotch,
-  pojoaque,
-  vs,
-  xonokai,
-} from 'react-syntax-highlighter/dist/esm/styles/prism'
-
-import {
-  docco,
-  a11yDark,
-  a11yLight,
-  agate,
-  anOldHope,
-  arduinoLight,
-  ascetic,
-  github,
-} from 'react-syntax-highlighter/dist/esm/styles/hljs'
-// import {
-//   json,
-//   jsx,
-//   javascript,
-//   python,
-//   c,
-//   sass,
-//   scss,
-//   go,
-//   java,
-//   css,
-//   sql,
-//   cpp,
-//   nginx,
-//   rust,
-//   ruby,
-//   php
-// } from 'react-syntax-highlighter/dist/esm/languages/prism'
+import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 
 const CodeTag = props => {
   const { value, language } = props

@@ -20,6 +20,7 @@ const Article = props => {
     detail,
     isFavorite,
     favoriteCount,
+    articleCommentCount,
     match: {
       params: { id },
     },
@@ -27,9 +28,16 @@ const Article = props => {
 
   useEffect(() => {
     if (dispatch) {
-      dispatch({ type: 'article/detail', payload: { id } }).then(() => {
-        dispatch({ type: 'article/readArticle', payload: { articleId: id } })
-      })
+      dispatch({ type: 'article/detail', payload: { id } })
+        .then(() => {
+          dispatch({ type: 'article/readArticle', payload: { articleId: id } })
+        })
+        .then(() => {
+          dispatch({
+            type: 'article/articleCommentCount',
+            payload: { articleId: id },
+          })
+        })
     }
   }, [])
   const handleFavorite = () => {
@@ -40,6 +48,7 @@ const Article = props => {
       })
     }
   }
+  console.log(articleCommentCount)
   return (
     <>
       <Header />
@@ -107,7 +116,7 @@ const Article = props => {
                 <MessageOutlined style={{ color: '#ccc' }} />
               </div>
               <div className={styles.articlePanelCount}>
-                <span>{detail.comment}</span>
+                <span>{articleCommentCount}</span>
               </div>
             </div>
           </div>
@@ -118,11 +127,15 @@ const Article = props => {
 }
 
 export default connect(
-  ({ article: { detail, hots, isFavorite, favoriteCount }, loading }) => ({
+  ({
+    article: { detail, hots, isFavorite, favoriteCount, articleCommentCount },
+    loading,
+  }) => ({
     detail,
     hots,
     isFavorite,
     favoriteCount,
+    articleCommentCount,
     loading: loading.effects['article/detail'],
     loading2: loading.effects['article/hot'],
   }),

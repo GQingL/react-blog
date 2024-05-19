@@ -7,10 +7,10 @@ import {
   getComments,
   getTags,
   createComment,
-  updateFavorite,
-  doFavorite,
+  articleLikeCounts,
   getHoliday,
   readArticle,
+  readComment,
 } from '@/services/article'
 
 export default {
@@ -24,8 +24,8 @@ export default {
     detail: {},
     holidays: [],
     articleCount: 0,
-    isFavorite: false,
     favoriteCount: 0,
+    articleCommentCount: 0,
   },
   effects: {
     *categories({ payload }, { call, put }) {
@@ -128,7 +128,7 @@ export default {
     },
 
     *favorite({ payload }, { call, put }) {
-      const { status, data } = yield call(updateFavorite, payload)
+      const { status, data } = yield call(articleLikeCounts, payload)
       if (status === 200) {
         yield put({
           type: 'handle',
@@ -141,13 +141,13 @@ export default {
       }
     },
 
-    *isFavorite({ payload }, { call, put }) {
-      const { status, data } = yield call(doFavorite, payload)
+    *articleCommentCount({ payload }, { call, put }) {
+      const { status, data } = yield call(readComment, payload)
       if (status === 200) {
         yield put({
           type: 'handle',
           payload: {
-            isFavorite: data,
+            articleCommentCount: data,
           },
         })
       }

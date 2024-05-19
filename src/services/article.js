@@ -11,10 +11,10 @@ const GET_ARTICLE_DETAIL_PATH = '/portal/article/detail'
 const GET_COMMENTS_PATH = '/comment/list'
 const CREATE_COMMENT_PATH = '/comment/createComment'
 const GET_TAGS_PATH = '/tagMng/getCatList'
-const UPDATE_FAVORITE_PATH = '/test' // 临时路径，需根据实际调整
 const DO_LIKE_PATH = '/portal/article/like'
 const GET_HOLIDAY_PATH = '/portal/article/vacation'
 const READ_ARTICLE_PATH = '/portal/article/readArticle'
+const ARTICLE_COMMENT_PATH = '/comment/counts'
 
 /**
  * 封装的请求函数，用于获取分类和标签信息
@@ -85,20 +85,11 @@ export async function getTags() {
 }
 
 /**
- * 封装的请求函数，用于给文章点赞
- * @param {Object} data 包含收藏信息的数据对象
- * @returns {Promise} 返回一个Promise对象，包含请求结果
- */
-export async function updateFavorite(data) {
-  return request(`${API_BASE}${DO_LIKE_PATH}?` + stringify(data))
-}
-
-/**
  * 封装的请求函数，用于文章点赞
  * @param {Object} params 查询参数对象
  * @returns {Promise} 返回一个Promise对象，包含请求结果
  */
-export async function doFavorite(params) {
+export async function articleLikeCounts(params) {
   return request(`${API_BASE}${DO_LIKE_PATH}?` + stringify(params))
 }
 
@@ -118,4 +109,14 @@ export async function readArticle(data) {
   return request(`${API_BASE}${READ_ARTICLE_PATH}?${stringify(data)}`, {
     method: 'POST',
   })
+}
+
+/**
+ * 异步读取评论功能
+ * @param {Object} data - 包含查询评论所需数据的对象
+ * @returns {Promise} 返回一个Promise对象，解析为请求结果
+ */
+export async function readComment(data) {
+  // 构建请求URL，并发送网络请求
+  return request(`${API_BASE}${ARTICLE_COMMENT_PATH}?${stringify(data)}`)
 }

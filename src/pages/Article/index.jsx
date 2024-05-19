@@ -27,16 +27,16 @@ const Article = props => {
 
   useEffect(() => {
     if (dispatch) {
-      dispatch({ type: 'article/detail', payload: { id } })
-      // dispatch({ type: 'article/isFavorite', payload: { id } })
-      // dispatch({ type: 'article/hot' })
+      dispatch({ type: 'article/detail', payload: { id } }).then(() => {
+        dispatch({ type: 'article/readArticle', payload: { articleId: id } })
+      })
     }
   }, [])
   const handleFavorite = () => {
     if (dispatch) {
       dispatch({
         type: 'article/favorite',
-        payload: { id, author: detail.uid },
+        payload: { articleId: id, author: detail.uid },
       })
     }
   }

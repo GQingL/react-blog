@@ -12,8 +12,9 @@ const GET_COMMENTS_PATH = '/comment/list'
 const CREATE_COMMENT_PATH = '/comment/createComment'
 const GET_TAGS_PATH = '/tagMng/getCatList'
 const UPDATE_FAVORITE_PATH = '/test' // 临时路径，需根据实际调整
-const GET_IS_FAVORITE_PATH = '/test' // 临时路径，需根据实际调整
+const DO_LIKE_PATH = '/portal/article/like'
 const GET_HOLIDAY_PATH = '/portal/article/vacation'
+const READ_ARTICLE_PATH = '/portal/article/readArticle'
 
 /**
  * 封装的请求函数，用于获取分类和标签信息
@@ -84,21 +85,21 @@ export async function getTags() {
 }
 
 /**
- * 封装的请求函数，用于更新文章的收藏状态
+ * 封装的请求函数，用于给文章点赞
  * @param {Object} data 包含收藏信息的数据对象
  * @returns {Promise} 返回一个Promise对象，包含请求结果
  */
 export async function updateFavorite(data) {
-  return request(`${API_BASE}${UPDATE_FAVORITE_PATH}`, { method: 'POST', data })
+  return request(`${API_BASE}${DO_LIKE_PATH}?` + stringify(data))
 }
 
 /**
- * 封装的请求函数，用于检查文章是否已被收藏
+ * 封装的请求函数，用于文章点赞
  * @param {Object} params 查询参数对象
  * @returns {Promise} 返回一个Promise对象，包含请求结果
  */
-export async function getIsFavorite(params) {
-  return request(`${API_BASE}${GET_IS_FAVORITE_PATH}`)
+export async function doFavorite(params) {
+  return request(`${API_BASE}${DO_LIKE_PATH}?` + stringify(params))
 }
 
 /**
@@ -107,4 +108,14 @@ export async function getIsFavorite(params) {
  */
 export async function getHoliday() {
   return request(`${API_BASE}${GET_HOLIDAY_PATH}`)
+}
+
+/**
+ * 封装的请求函数，用于获文章阅读数
+ * @returns {Promise} 返回一个Promise对象，包含请求结果
+ */
+export async function readArticle(data) {
+  return request(`${API_BASE}${READ_ARTICLE_PATH}?${stringify(data)}`, {
+    method: 'POST',
+  })
 }

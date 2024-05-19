@@ -8,8 +8,9 @@ import {
   getTags,
   createComment,
   updateFavorite,
-  getIsFavorite,
+  doFavorite,
   getHoliday,
+  readArticle,
 } from '@/services/article'
 
 export default {
@@ -71,7 +72,7 @@ export default {
           type: 'handle',
           payload: {
             detail: data,
-            favoriteCount: data.favorite,
+            favoriteCount: data.likeCount,
           },
         })
       }
@@ -122,18 +123,26 @@ export default {
         })
       }
     },
+    *readArticle({ payload }, { call }) {
+      yield call(readArticle, payload)
+    },
 
     *favorite({ payload }, { call, put }) {
-      const { status } = yield call(updateFavorite, payload)
+      const { status, data } = yield call(updateFavorite, payload)
       if (status === 200) {
-        yield put({ type: 'changeFavorite' })
+        yield put({
+          type: 'handle',
+          payload: {
+            favoriteCount: data,
+          },
+        })
       } else {
         history.push('/login')
       }
     },
 
-    *isFavorite({ payload, callback }, { call, put }) {
-      const { status, data } = yield call(getIsFavorite, payload)
+    *isFavorite({ payload }, { call, put }) {
+      const { status, data } = yield call(doFavorite, payload)
       if (status === 200) {
         yield put({
           type: 'handle',
@@ -145,21 +154,6 @@ export default {
     },
   },
   reducers: {
-    changeFavorite(state) {
-      const type = state.isFavorite ? 'reduce' : 'plus'
-      let favoriteCount = state.favoriteCount
-      if (type === 'plus') {
-        favoriteCount += 1
-      }
-      if (type === 'reduce') {
-        favoriteCount -= 1
-      }
-      return {
-        ...state,
-        isFavorite: !state.isFavorite,
-        favoriteCount,
-      }
-    },
     handle(state, { payload }) {
       return { ...state, ...payload }
     },

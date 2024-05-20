@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Layout, Card } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
@@ -7,6 +7,7 @@ import MathJax from 'react-mathjax'
 import Header from '@/components/Header'
 import UserAvatar from '@/components/UserAvatar'
 import AddComment from '@/components/Comment'
+import DOMPurify from 'dompurify'
 
 import styles from './index.less'
 import './markdown.css'
@@ -26,20 +27,35 @@ const Article = props => {
     },
   } = props
 
+  const cleanContent = useMemo(() => {
+    if (detail && detail.content) {
+      return DOMPurify.sanitize(detail.content)
+    }
+    return ''
+  }, [detail])
+
   useEffect(() => {
-    if (dispatch) {
-      dispatch({ type: 'article/detail', payload: { id } })
-        .then(() => {
-          dispatch({ type: 'article/readArticle', payload: { articleId: id } })
-        })
-        .then(() => {
-          dispatch({
+    const fetchData = async () => {
+      try {
+        if (dispatch) {
+          await dispatch({ type: 'article/detail', payload: { id } })
+          await dispatch({
+            type: 'article/readArticle',
+            payload: { articleId: id },
+          })
+          await dispatch({
             type: 'article/articleCommentCount',
             payload: { articleId: id },
           })
-        })
+        }
+      } catch (error) {
+        console.error('Fetching data failed', error)
+      }
     }
+
+    fetchData()
   }, [])
+
   const handleFavorite = () => {
     if (dispatch) {
       dispatch({
@@ -48,7 +64,7 @@ const Article = props => {
       })
     }
   }
-  console.log(articleCommentCount)
+
   return (
     <>
       <Header />
@@ -91,7 +107,7 @@ const Article = props => {
                 <div className="markdown-body ft-16">
                   <MathJax.Provider>
                     <div
-                      dangerouslySetInnerHTML={{ __html: detail.content }}
+                      dangerouslySetInnerHTML={{ __html: cleanContent }}
                     ></div>
                   </MathJax.Provider>
                 </div>

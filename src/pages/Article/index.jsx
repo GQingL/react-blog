@@ -14,6 +14,14 @@ import './markdown.css'
 
 const { Content } = Layout
 
+const ARTICLE_DETAIL = 'article/detail'
+
+const ARTICLE_READ = 'article/readArticle'
+
+const ARTICLE_COMMENT_COUNT = 'article/articleCommentCount'
+
+const ARTICLE_FAVORITE = 'article/favorite'
+
 const Article = props => {
   const {
     dispatch,
@@ -38,13 +46,13 @@ const Article = props => {
     const fetchData = async () => {
       try {
         if (dispatch) {
-          await dispatch({ type: 'article/detail', payload: { id } })
+          await dispatch({ type: ARTICLE_DETAIL, payload: { id } })
           await dispatch({
-            type: 'article/readArticle',
+            type: ARTICLE_READ,
             payload: { articleId: id },
           })
           await dispatch({
-            type: 'article/articleCommentCount',
+            type: ARTICLE_COMMENT_COUNT,
             payload: { articleId: id },
           })
         }
@@ -59,7 +67,7 @@ const Article = props => {
   const handleFavorite = () => {
     if (dispatch) {
       dispatch({
-        type: 'article/favorite',
+        type: ARTICLE_FAVORITE,
         payload: { articleId: id, author: detail.uid },
       })
     }
@@ -152,7 +160,6 @@ export default connect(
     isFavorite,
     favoriteCount,
     articleCommentCount,
-    loading: loading.effects['article/detail'],
-    loading2: loading.effects['article/hot'],
+    loading: loading.effects[ARTICLE_DETAIL],
   }),
 )(Article)

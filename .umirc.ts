@@ -45,10 +45,6 @@ export default defineConfig({
       component: '@/pages/Article',
     },
     {
-      path: '/write/course',
-      component: '@/pages/WriteCourse',
-    },
-    {
       path: '/write/drafts',
       component: '@/pages/Draft',
     },

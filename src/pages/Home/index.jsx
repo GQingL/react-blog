@@ -6,6 +6,8 @@ import SliderList from '@/components/SliderList'
 import Tags from '@/components/Tags'
 import styles from './index.less'
 
+const HOT_PATH = 'article/hot'
+
 const { Content } = Layout
 
 const Home = props => {
@@ -18,7 +20,7 @@ const Home = props => {
   } = props
   useEffect(() => {
     if (dispatch) {
-      dispatch({ type: 'article/hot' })
+      dispatch({ type: HOT_PATH })
     }
   }, [])
   return (
@@ -55,5 +57,5 @@ const Home = props => {
 
 export default connect(({ article: { hots }, loading }) => ({
   hots,
-  loading: loading.effects['article/hot'],
+  loading: loading.effects[HOT_PATH],
 }))(Home)

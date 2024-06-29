@@ -55,7 +55,7 @@ const Content = props => {
             <CheckableTag
               key={categories.category.name}
               checked={categories.category.id === selectedCategory}
-              onChange={selected => checkCategoriesHandle(categories)}
+              onChange={_selected => checkCategoriesHandle(categories)}
             >
               {categories.category.name}
             </CheckableTag>

@@ -3,6 +3,10 @@ import { Button, Row, Col, Form, Input } from 'antd'
 import { MobileOutlined, LockOutlined } from '@ant-design/icons'
 import { connect } from 'dva'
 
+const LOGIN_PATH = 'user/login'
+
+const USER_ACCOUNT = 'user/account'
+
 const Login = props => {
   const [form] = Form.useForm()
   const { dispatch, history, location, account } = props
@@ -15,11 +19,11 @@ const Login = props => {
   const onFinish = values => {
     if (dispatch) {
       dispatch({
-        type: 'user/login',
+        type: LOGIN_PATH,
         payload: values,
         callback(response) {
           dispatch({
-            type: 'user/account',
+            type: USER_ACCOUNT,
             payload: { userId: response.data.uid },
             callback(_user) {
               if (location.isRegister) {

@@ -3,7 +3,7 @@ import { Layout, Card } from 'antd'
 import { connect } from 'dva'
 import Header from '@/components/Header'
 import SliderList from '@/components/SliderList'
-import Tags from '@/components/Tags'
+import Vacation from '@/components/Vacation'
 import styles from './index.less'
 
 const HOT_PATH = 'article/hot'
@@ -43,7 +43,7 @@ const Home = props => {
                 split={false}
               />
             </Card>
-            <Tags />
+            <Vacation />
             <div className="mt-10 ft-13 pl-10">
               {<div className={styles.aboutColor}>蒙ICP备2023002149号-1</div>}
               <div className={styles.aboutColor}>©2024 blog Create by Q</div>

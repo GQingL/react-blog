@@ -12,7 +12,7 @@ const ARTICLE_PUBLISH_PATH = '/article/createArticle'
  * @returns {Promise} 返回请求结果的Promise对象
  */
 export async function createDraft(data) {
-  return request('/api/create/draft', {
+  return request(API_BASE + '/draft/new', {
     method: 'POST',
     data,
   })
@@ -24,15 +24,15 @@ export async function createDraft(data) {
  * @returns {Promise} 返回请求结果的Promise对象
  */
 export async function getDraft(params) {
-  return request(`/api/draft?${stringify(params)}`)
+  return request(API_BASE + `/draft/${params.id}`)
 }
 
 /**
  * 获取所有草稿
  * @returns {Promise} 返回请求结果的Promise对象
  */
-export async function getDrafts() {
-  return request('/api/drafts')
+export async function getDrafts(params) {
+  return request(API_BASE + '/draft/list?' + `${stringify(params)}`)
 }
 
 /**
@@ -41,7 +41,7 @@ export async function getDrafts() {
  * @returns {Promise} 返回请求结果的Promise对象
  */
 export async function updateDraft(data) {
-  return request('/api/update/draft', {
+  return request(API_BASE + '/draft/new', {
     method: 'POST',
     data,
   })
@@ -53,10 +53,7 @@ export async function updateDraft(data) {
  * @returns {Promise} 返回请求结果的Promise对象
  */
 export async function deleteDraft(data) {
-  return request('/api/delete/draft', {
-    method: 'POST',
-    data,
-  })
+  return request(API_BASE + `/draft/${data.id}`, { method: 'DELETE' })
 }
 
 /**

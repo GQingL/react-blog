@@ -36,7 +36,7 @@ export default {
         yield put({
           type: 'handle',
           payload: {
-            markdown: data.markdown,
+            markdown: data.content,
             title: data.title,
           },
         })

@@ -261,12 +261,17 @@ const Write = props => {
       if (key !== 'new' && /^\d+$/.test(key)) {
         dispatch({
           type: 'write/updateDraft',
-          payload: { markdown, title, id: key },
+          payload: {
+            content: markdown,
+            title,
+            id: key,
+            publishUserId: account.id,
+          },
         })
       } else {
         dispatch({
           type: 'write/saveDraft',
-          payload: { markdown, title },
+          payload: { content: markdown, title, publishUserId: account.id },
         })
       }
     }
@@ -274,7 +279,7 @@ const Write = props => {
 
   const showDrawer = () => {
     if (dispatch) {
-      dispatch({ type: 'write/drafts' })
+      dispatch({ type: 'write/drafts', payload: { writerId: account.id } })
     }
     setVisible(true)
   }
@@ -295,6 +300,7 @@ const Write = props => {
   const writeNew = () => {
     dispatch({ type: 'write/setMarkdown', payload: { markdown: null } })
     dispatch({ type: 'write/setTitle', payload: { title: null } })
+    dispatch({ payload: { publishUserId: account.id } })
     history.push('/write/draft/new')
   }
 

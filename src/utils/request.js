@@ -32,7 +32,7 @@ const handleError = res => {
       // 坏请求处理
       break
     case 500:
-      message.error(res.msg)
+      message.error(res.data.content)
       break
     case 501:
     case 502:

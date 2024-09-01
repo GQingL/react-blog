@@ -13,7 +13,7 @@ const Draft = props => {
       history.push('/login')
     }
     if (dispatch) {
-      dispatch({ type: 'write/drafts' })
+      dispatch({ type: 'write/drafts', payload: { writerId: account.id } })
     }
   }, [])
 

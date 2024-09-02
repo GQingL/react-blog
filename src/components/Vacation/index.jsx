@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Tag, Card, Timeline } from 'antd'
+import { Tag, Card } from 'antd'
 import { connect } from 'dva'
 
 const Tags = props => {
@@ -14,12 +14,21 @@ const Tags = props => {
       loading={loading}
       size="small"
       bordered={false}
-      title="假期倒计时"
+      title="打工人健康提醒"
       className="mt-20"
+      headStyle={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
     >
       {holidays &&
         holidays.map(tag => (
-          <Tag key={tag} className="mb-10">
+          <Tag
+            key={tag}
+            className="mb-10"
+            style={{
+              width: '100%',
+              whiteSpace: 'normal',
+              overflowWrap: 'break-word',
+            }}
+          >
             {tag}
           </Tag>
         ))}

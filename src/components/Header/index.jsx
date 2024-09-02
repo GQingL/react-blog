@@ -198,9 +198,9 @@ const MainHeader = props => {
         placement="left"
         closable
         onClose={onClose}
-        visible={visible}
+        open={visible}
         componentWillUnmount={componentWillUnmount}
-        bodyStyle={{ padding: 0 }}
+        style={{ padding: 0 }}
       >
         <Menu onClick={handleClick} selectedKeys={['home']} mode="inline">
           {tabs &&

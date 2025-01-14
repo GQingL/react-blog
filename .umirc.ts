@@ -10,7 +10,7 @@ export default defineConfig({
   favicon: FAVICON,
   proxy: {
     '/api': {
-      target: PATH_DEV,
+      target: PATH,
       pathRewrite: { '^/api': '' },
       changeOrigin: true,
     },

@@ -26,7 +26,7 @@ const Help = props => {
     if (res.status === 200) {
       const newAIMessages = [
         ...newMessages,
-        { type: 'ai', content: `回复：${res.data}` }, // 模拟 AI 回复
+        { type: 'ai', content: `${res.data}` }, // 模拟 AI 回复
       ]
       setMessages(newAIMessages)
     } else {
@@ -56,8 +56,10 @@ const Help = props => {
             flexDirection: 'column',
             justifyContent: 'space-between',
             height: '100%',
-            maxWidth: '800px',
+            width: '650px', // 增加最大宽度
             margin: '0 auto',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // 添加阴影
+            borderRadius: '8px', // 添加圆角
           }}
         >
           {/* 聊天内容展示区域 */}
@@ -70,6 +72,8 @@ const Help = props => {
               borderRadius: '8px',
               padding: '16px',
               background: '#fafafa',
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // 添加阴影
+              width: '100%', // 确保聊天区域宽度占满可用空间
             }}
           >
             <List
@@ -103,12 +107,38 @@ const Help = props => {
                         style={{
                           backgroundColor:
                             item.type === 'user' ? '#e6f7ff' : '#f5f5f5',
-                          padding: '8px 12px',
+                          padding: '10px 14px', // 增加内边距
                           borderRadius: '16px',
                           display: 'inline-block',
+                          fontSize: '16px', // 增加字体大小
+                          whiteSpace: 'pre-wrap', // 保持换行
                         }}
                       >
-                        {item.content}
+                        {item.content
+                          .split(/```([\s\S]*?)```/g)
+                          .map((part, index) => {
+                            if (index % 2 === 1) {
+                              // 这是代码块
+                              return (
+                                <div
+                                  key={index}
+                                  style={{
+                                    backgroundColor: '#f0f0f0',
+                                    border: '1px solid #d9d9d9',
+                                    borderRadius: '4px',
+                                    padding: '8px',
+                                    fontFamily: 'monospace', // 使用等宽字体
+                                    whiteSpace: 'pre-wrap', // 保持换行
+                                    margin: '8px 0', // 增加上下间距
+                                  }}
+                                >
+                                  {part}
+                                </div>
+                              )
+                            }
+                            // 这是普通文本
+                            return part
+                          })}
                       </Text>
                     }
                   />
@@ -124,12 +154,13 @@ const Help = props => {
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
               onKeyDown={handleKeyPress}
-              style={{ flex: 1 }}
+              style={{ flex: 1, height: '48px', fontSize: '16px' }} // 增加高度和字体大小
             />
             <Button
               type="primary"
               icon={<SendOutlined />}
               onClick={sendMessage}
+              style={{ height: '48px' }} // 使按钮与输入框高度一致
             >
               发送
             </Button>

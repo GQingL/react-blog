@@ -16,6 +16,9 @@ const LeftMenu = memo(({ pathname }) => {
       <Menu.Item key="/account/me">
         <Link to="/account/me">我的信息</Link>
       </Menu.Item>
+      <Menu.Item key="/account/help">
+        <Link to="/account/help">知识助手</Link>
+      </Menu.Item>
     </Menu>
   )
 })

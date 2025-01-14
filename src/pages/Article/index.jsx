@@ -106,7 +106,7 @@ const Article = props => {
                         {moment(detail.publishTime).format(
                           'YYYY[年]MM[月]DD[日]',
                         )}
-                        <span className="ml-10">{detail.view}阅读</span>
+                        <span className="ml-10">{detail.readCounts}阅读</span>
                       </small>
                     </div>
                   </div>

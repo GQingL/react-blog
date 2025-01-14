@@ -10,7 +10,7 @@ export default defineConfig({
   favicon: FAVICON,
   proxy: {
     '/api': {
-      target: PATH,
+      target: PATH_DEV,
       pathRewrite: { '^/api': '' },
       changeOrigin: true,
     },
@@ -65,8 +65,16 @@ export default defineConfig({
           redirect: '/account/me',
         },
         {
+          path: '/account',
+          redirect: '/account/help',
+        },
+        {
           path: '/account/me',
           component: '@/components/Account/Me',
+        },
+        {
+          path: '/account/help',
+          component: '@/components/Account/Help',
         },
       ],
     },

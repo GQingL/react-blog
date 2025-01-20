@@ -8,10 +8,10 @@ import {
 import storageHelper from '@/utils/storage'
 
 const face = [
-  'https://immisso.oss-cn-hangzhou.aliyuncs.com/avatar/001.png',
-  'https://immisso.oss-cn-hangzhou.aliyuncs.com/avatar/002.png',
-  'https://immisso.oss-cn-hangzhou.aliyuncs.com/avatar/003.png',
-  'https://immisso.oss-cn-hangzhou.aliyuncs.com/avatar/004.png',
+  'https://guangqingl.top/portrait/240121A4N57DZHX4/0703481398.jpg',
+  'https://guangqingl.top/portrait/240121A4N57DZHX4/1-210325135J00-L.jpg',
+  'https://guangqingl.top/portrait/240121A4N57DZHX4/1-2103251444360-L.jpg',
+  'https://guangqingl.top/portrait/240121A4N57DZHX4/1-2103252334170-L.png',
 ]
 
 const initAccount = () => {
@@ -80,7 +80,6 @@ export default {
 
     *setAccount({ payload }, { call, put }) {
       const { status } = yield call(modifyAccount, payload)
-      console.log(status)
       if (status === 200) {
         yield put({
           type: 'handle',

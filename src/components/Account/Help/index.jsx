@@ -47,7 +47,7 @@ const Help = props => {
 
   return (
     <>
-      <Layout style={{ height: '100vh', background: '#fff' }}>
+      <Layout style={{ height: '83vh', background: '#fff' }}>
         {/* 主内容区域 */}
         <Content
           style={{

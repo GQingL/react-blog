@@ -71,56 +71,21 @@ const MainHeader = props => {
               defaultSelectedKeys={['/home']}
               selectedKeys={[pathname]}
             >
-              {tabs &&
-                tabs.map(item => (
-                  <Menu.Item key="/home">
-                    <Link
-                      to={{
-                        pathname: item.path,
-                        state: { category: item.key, tag: item.key2 },
-                      }}
-                    >
-                      {item.title}
-                    </Link>
-                  </Menu.Item>
-                ))}
-              {categories.length > 0 &&
-                categories.forEach(item => {
-                  return categories.length > 0 ? (
-                    <SubMenu
-                      title={
-                        <span className="submenu-title-wrapper">
-                          {item.name}
-                        </span>
-                      }
-                      key={`/home/${item.name}`}
-                    >
-                      {/* {item.tags.map(tag => (
-                        <Menu.Item key={`/home/${item.name}/${tag.name}`}>
-                          <Link
-                            to={{
-                              pathname: `/home/${item.name}/${tag.name}`,
-                              state: { category: item.id, tag: tag.id }
-                            }}
-                          >
-                            {tag.name}
-                          </Link>
-                        </Menu.Item>
-                      ))} */}
-                    </SubMenu>
-                  ) : (
-                    <Menu.Item key={`/home/${item.name}`}>
-                      <Link
-                        to={{
-                          pathname: `/home/${item.name}`,
-                          state: { category: item.id },
-                        }}
-                      >
-                        {item.name}
-                      </Link>
-                    </Menu.Item>
-                  )
-                })}
+              <Menu.Item key="home">
+                <Link to="/">首页</Link>
+              </Menu.Item>
+              {categories.map(item => (
+                <Menu.Item key={`/home/${item.name}`}>
+                  <Link
+                    to={{
+                      pathname: `/home/${item.name}`,
+                      state: { category: item.id },
+                    }}
+                  >
+                    {item.name}
+                  </Link>
+                </Menu.Item>
+              ))}
             </Menu>
           </div>
           <div className={styles.homeHeaderMobile}>

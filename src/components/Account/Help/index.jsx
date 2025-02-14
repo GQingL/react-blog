@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Layout, Input, Button, List, Avatar, Typography } from 'antd'
 import { SendOutlined, RobotOutlined, UserOutlined } from '@ant-design/icons'
-
 import { connect } from 'dva'
 
 const { Content } = Layout
@@ -15,24 +14,32 @@ const Help = props => {
 
   // 发送消息
   const sendMessage = async () => {
-    if (!inputValue.trim()) return // 如果输入为空，不发送消息
+    if (!inputValue.trim()) return // 如果输入为空或正在请求，不发送消息
     const newMessages = [...messages, { type: 'user', content: inputValue }]
     setMessages(newMessages)
     setInputValue('') // 清空输入框
-    const res = await dispatch({
-      type: 'gpt/kimiChatText',
-      payload: { content: inputValue },
-    })
-    if (res.status === 200) {
-      const newAIMessages = [
-        ...newMessages,
-        { type: 'ai', content: `${res.data}` }, // 模拟 AI 回复
-      ]
-      setMessages(newAIMessages)
-    } else {
+
+    try {
+      const eventSource = await dispatch({
+        type: 'gpt/kimiChatText',
+        payload: { content: inputValue },
+      })
+      const aiMessageIndex = newMessages.length // 计算 AI 消息的正确索引
+      setMessages([...newMessages, { type: 'ai', content: '' }]) // 先添加一个空的 AI 消息
+      eventSource.onmessage = function(event) {
+        if (event.data === 'stop') {
+          // 判断是否包含结束标志
+          // 这里可以添加处理结束的逻辑，例如关闭连接或更新状态
+          console.log('连接已关闭')
+          eventSource.close()
+        } else {
+          updateMessage(event.data, aiMessageIndex)
+        }
+      }
+    } catch (error) {
       const errorMessages = [
         ...newMessages,
-        { type: 'ai', content: '消息回复失败，请重新提问' }, // 模拟 AI 回复
+        { type: 'ai', content: '获取 GPT 失败，请稍后重试' }, // 错误处理
       ]
       setMessages(errorMessages)
     }
@@ -43,6 +50,14 @@ const Help = props => {
     if (e.key === 'Enter') {
       sendMessage()
     }
+  }
+
+  function updateMessage(message, aiMessageIndex) {
+    setMessages(prevMessages => {
+      const updatedMessages = [...prevMessages]
+      updatedMessages[aiMessageIndex].content += message // 确保更新的是 AI 消息的内容
+      return updatedMessages
+    })
   }
 
   return (
